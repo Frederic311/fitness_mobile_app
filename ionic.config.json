@@ -1,5 +1,5 @@
 {
-  "name": "firebaseAuthApp",
+  "name": "fitness_mobile",
   "integrations": {
     "capacitor": {
       "enabled": false

@@ -2,7 +2,7 @@ import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
   appId: 'io.ionic.starter',
-  appName: 'firebaseAuthApp',
+  appName: 'fitness_mobile',
   webDir: 'www',
   bundledWebRuntime: false
 };
