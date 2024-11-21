@@ -1,0 +1,54 @@
+/* General Container */
+.workout-container {
+    text-align: center;
+    
+    img{
+        height: 75vh;
+    }
+  }
+  
+  /* Image */
+  .workout-image {
+    width: 120%;
+    height: auto;
+    border-radius: 10px;
+  }
+  
+  /* Tagline */
+  .tagline {
+    padding: 0px 30px;
+    font-family: 'Poppins', sans-serif;
+    color: #ffffff;
+    font-size: 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+  
+  /* Pagination Dots */
+  .pagination-dots {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin: 10px 0;
+  }
+  
+  .dot {
+    width: 8px;
+    height: 8px;
+    background: #8F9098;
+    border-radius: 50%;
+  }
+  
+  .dot.active {
+    background: #6A5ACD; /* Active purple color */
+  }
+  
+  /* Next Button */
+  .next-button {
+    padding: 0px 30px;
+    --background: #6A5ACD;
+    --border-radius: 8px;
+    font-weight: 600;
+    font-size: 16px;
+  }
+  

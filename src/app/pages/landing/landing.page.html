@@ -1,13 +1,10 @@
-
-<ion-content [fullscreen]="true">
-  <div class="container">
-    <ion-img src="assets/bg.png"/>
-    <ion-title>Explore the world </ion-title>
-  </div>
+<ion-content>
+  <div class="page-container">
+    <div class="logo-container">
+      <img src="assets/bg.png" alt="Logo" class="logo-image" />
+    </div>
   
-  <ion-fab  vertical="bottom" horizontal="end" style="margin-bottom: 30px;" >
-    <ion-fab-button [routerLink]="['/login']"  >
-      <ion-icon name="chevron-forward"></ion-icon>
-    </ion-fab-button>
-  </ion-fab>
+
+    <ion-spinner name="circles" class="loading-spinner"></ion-spinner>
+  </div>  
 </ion-content>

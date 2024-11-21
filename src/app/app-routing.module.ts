@@ -43,6 +43,36 @@ const routes: Routes = [
     path: 'journal',
     loadChildren: () => import('./pages/journal/journal.module').then( m => m.JournalPageModule)
   },
+  {
+    path: 'splash',
+    loadChildren: () => import('./pages/splashes/splash/splash.module').then( m => m.SplashPageModule)
+  },
+  {
+    path: 'workout1',
+    loadChildren: () => import('./pages/splashes/workout1/workout1.module').then( m => m.Workout1PageModule)
+  },
+  {
+    path: 'workout2',
+    loadChildren: () => import('./pages/splashes/workout2/workout2.module').then( m => m.Workout2PageModule)
+  },
+  {
+    path: 'role',
+    loadChildren: () => import('./pages/creation/role/role.module').then( m => m.RolePageModule)
+  },
+  {
+    path: 'profile',
+    loadChildren: () => import('./pages/creation/profile/profile.module').then( m => m.ProfilePageModule)
+  },
+  {
+    path: 'perso',
+    loadChildren: () => import('./pages/info/perso/perso.module').then( m => m.PersoPageModule)
+  },
+  {
+    path: 'role',
+    loadChildren: () => import('./pages/info/role/role.module').then( m => m.RolePageModule)
+  },
+
+
   
 ];
 

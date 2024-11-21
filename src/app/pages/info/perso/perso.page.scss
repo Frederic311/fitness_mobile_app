@@ -1,0 +1,66 @@
+.profile-container {
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .avatar {
+    margin-top: 20px;
+    width: 120px;
+    height: 120px;
+    margin-bottom: 15px;
+  }
+  
+  .upload-button {
+    background-color: #6A5ACD;
+    color: white;
+    border-radius: 8px;
+    margin-bottom: 30px;
+    max-width: 10px;
+  }
+  
+  h1 {
+    font-size: 28px;
+    font-weight: bold;
+    color: #fff;
+  }
+  
+  p {
+    color: #8F9098;
+    margin-bottom: 20px;
+  }
+  
+  ion-item {
+    margin-bottom: 20px;
+  }
+  
+  ion-input {
+    color: #ffffff;
+    --background: #1F222A;
+    --border-radius: 8px;
+    --padding-start: 12px;
+    --padding-end: 12px;
+  }
+  
+  ion-label {
+    color: #fff;
+  }
+  
+  ion-button.submit-button {
+    background-color: #6A5ACD;
+    margin-bottom: 20px;
+  }
+  
+  ion-button.submit-button:hover {
+    background-color: #5A4DC9;
+  }
+  
+  ion-button.skip-button {
+    color: #8F9098;
+  }
+  
+  /* Custom styles for password visibility icon */
+  ion-icon {
+    color: #8F9098;
+    cursor: pointer;
+  }
+  
