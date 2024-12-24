@@ -1,35 +1,54 @@
 <ion-content>
   <div class="profile-container">
-    <!-- Avatar with image preview -->
-    <ion-avatar class="avatar">
-      <img [src]="profilePicture || 'assets/default-avatar.png'" alt="Profile Picture" />
-    </ion-avatar>
+    <!-- Avatar with default image and upload feature -->
+ 
 
-    <!-- File input for photo selection -->
-    <ion-button class="upload-button">
-      <input type="file" accept="image/*" (change)="onPhotoSelected($event)" />
-      Upload Photo
-    </ion-button>
+    <!-- Hidden file input -->
+    <input 
+      type="file" 
+      id="fileInput" 
+      accept="image/*" 
+      (change)="onPhotoSelected($event)" 
+      hidden 
+    />
 
     <!-- Title and description -->
     <h1>Fill Your Profile</h1>
     <p>Don't worry, you can always change it later, or you can skip it for now.</p>
 
+    <ion-avatar class="avatar" (click)="triggerFileInput()">
+      <img [src]="profilePicture || 'assets/images/default-avatar.png'" alt="Profile Picture" />
+    </ion-avatar>
+
     <!-- Profile form -->
     <form (ngSubmit)="submitForm()">
       <ion-item>
         <ion-label position="floating">Full Name</ion-label>
-        <ion-input type="text" [(ngModel)]="profile.fullName" name="fullName" required></ion-input>
+        <ion-input 
+          type="text" 
+          [(ngModel)]="profile.fullName" 
+          name="fullName" 
+          required
+        ></ion-input>
       </ion-item>
 
       <ion-item>
         <ion-label position="floating">Nickname</ion-label>
-        <ion-input type="text" [(ngModel)]="profile.nickname" name="nickname"></ion-input>
+        <ion-input 
+          type="text" 
+          [(ngModel)]="profile.nickname" 
+          name="nickname"
+        ></ion-input>
       </ion-item>
 
       <ion-item>
         <ion-label position="floating">Email</ion-label>
-        <ion-input type="email" [(ngModel)]="profile.email" name="email" required></ion-input>
+        <ion-input 
+          type="email" 
+          [(ngModel)]="profile.email" 
+          name="email" 
+          required
+        ></ion-input>
       </ion-item>
 
       <ion-item>
@@ -49,13 +68,27 @@
 
       <ion-item>
         <ion-label position="floating">Phone Number</ion-label>
-        <ion-input type="tel" [(ngModel)]="profile.phoneNumber" name="phoneNumber" required></ion-input>
+        <ion-input 
+          type="tel" 
+          [(ngModel)]="profile.phoneNumber" 
+          name="phoneNumber" 
+          required
+        ></ion-input>
       </ion-item>
 
-      <ion-button expand="full" class="submit-button" type="submit">Submit</ion-button>
+      <ion-button 
+        expand="full" 
+        class="submit-button" 
+        type="submit"
+      >Submit</ion-button>
     </form>
 
     <!-- Skip button -->
-    <ion-button expand="full" class="skip-button" fill="clear" (click)="skipProfile()">Skip</ion-button>
+    <!-- <ion-button 
+      expand="full" 
+      class="skip-button" 
+      fill="clear" 
+      (click)="skipProfile()"
+    >Skip</ion-button> -->
   </div>
 </ion-content>

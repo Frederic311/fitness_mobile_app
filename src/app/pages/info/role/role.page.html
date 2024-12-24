@@ -1,13 +1,21 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>role</ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content class="ion-padding role-selection">
+  <div class="header">
+    <h2>Tell Us About Yourself</h2>
+    <p>To give you a better experience and results we need to know your role.</p>
+  </div>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">role</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <div class="options">
+    <ion-button class="option male" expand="block" fill="clear">
+      <ion-icon name="male-outline"></ion-icon>
+      <span>Male</span>
+    </ion-button>
+    <ion-button class="option female" expand="block" fill="clear">
+      <ion-icon name="female-outline"></ion-icon>
+      <span>Female</span>
+    </ion-button>
+  </div>
+
+  <ion-button class="continue-button" expand="block">
+    Continue
+  </ion-button>
 </ion-content>
