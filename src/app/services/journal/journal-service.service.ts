@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Firestore, addDoc, collection, collectionData, doc, docData, query, updateDoc, where } from '@angular/fire/firestore';
 
-import { AuthServiceService } from '../auth-service.service';
+import { AuthService } from '../auth/auth-service.service';
 
 import firebase from 'firebase/compat/app';
 import { Observable } from 'rxjs';
@@ -35,7 +35,7 @@ export class JournalServiceService {
   private journalCollection:any
   private userId:any 
 
-  constructor(private firestore:Firestore,private authService:AuthServiceService) {
+  constructor(private firestore:Firestore,private authService:AuthService) {
     this.authService.getProfile().then(user => {
 
       this.userId = user?.uid;

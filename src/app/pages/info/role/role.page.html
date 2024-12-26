@@ -1,21 +1,31 @@
-<ion-content class="ion-padding role-selection">
+<div class="role-selection">
   <div class="header">
     <h2>Tell Us About Yourself</h2>
-    <p>To give you a better experience and results we need to know your role.</p>
+    <p>Select your role to proceed.</p>
   </div>
 
   <div class="options">
-    <ion-button class="option male" expand="block" fill="clear">
-      <ion-icon name="male-outline"></ion-icon>
-      <span>Male</span>
-    </ion-button>
-    <ion-button class="option female" expand="block" fill="clear">
-      <ion-icon name="female-outline"></ion-icon>
-      <span>Female</span>
-    </ion-button>
+    <button
+      class="option"
+      [class.selected]="selectedRole === 'Coach'"
+      (click)="selectRole('Coach')"
+    >
+      <span>Coach</span>
+    </button>
+    <button
+      class="option"
+      [class.selected]="selectedRole === 'User'"
+      (click)="selectRole('User')"
+    >
+      <span>User</span>
+    </button>
   </div>
 
-  <ion-button class="continue-button" expand="block">
+  <button
+    class="continue-button"
+    [disabled]="!selectedRole"
+    (click)="continue()"
+  >
     Continue
-  </ion-button>
-</ion-content>
+  </button>
+</div>

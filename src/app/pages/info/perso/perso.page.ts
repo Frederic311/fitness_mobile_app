@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from '../../../services/auth/auth-service.service';
 
 @Component({
-  selector: 'app-profile',
+  selector: 'app-perso',
   templateUrl: './perso.page.html',
   styleUrls: ['./perso.page.scss'],
 })
@@ -15,45 +16,50 @@ export class PersoPage {
     phoneNumber: '',
   };
 
-  profilePicture: string | null = null; // Holds the preview image URL
+  profilePicture: string | null = null;
   showPassword = false;
+  isLoading = false;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private authService: AuthService) {}
 
-  // Method to handle photo selection and preview
-  onPhotoSelected(event: any) {
+  onPhotoSelected(event: any): void {
     const file = event.target.files[0];
     if (file) {
       const reader = new FileReader();
       reader.onload = () => {
-        this.profilePicture = reader.result as string; // Set preview image URL
+        this.profilePicture = reader.result as string;
       };
-      reader.readAsDataURL(file); // Read the file as Data URL
+      reader.readAsDataURL(file);
     }
   }
 
-  // Method to programmatically trigger the file input
-  triggerFileInput() {
+  triggerFileInput(): void {
     const fileInput = document.getElementById('fileInput') as HTMLElement;
     fileInput.click();
   }
 
-  // Method to toggle password visibility
-  togglePasswordVisibility() {
+  togglePasswordVisibility(): void {
     this.showPassword = !this.showPassword;
   }
 
-  // Form submission handler
-  submitForm() {
-    // console.log('Form submitted with:', this.profile, 'Profile Picture:', this.profilePicture);
-    this.router.navigate(['/role'])
-    console.log('Profile creation skipped');
-    // Submit form data (e.g., to a backend API)
-  }
+  async submitForm(): Promise<void> {
+    if (!this.profile.email || !this.profile.password || !this.profile.fullName) {
+      console.error('Complete all required fields');
+      return;
+    }
 
-  // Skip profile creation
-  skipProfile() {
-    console.log('Profile creation skipped');
-    // Redirect to another page (e.g., the home screen)
+    this.isLoading = true;
+
+    try {
+      const user = await this.authService.registerUser(this.profile.email, this.profile.password);
+      console.log('User created:', user);
+
+      // Optionally, save additional profile info to Firestore or Realtime Database
+      this.router.navigate(['/role']); // Navigate to Role Page
+    } catch (error) {
+      console.error('Error creating user:', error);
+    } finally {
+      this.isLoading = false;
+    }
   }
 }

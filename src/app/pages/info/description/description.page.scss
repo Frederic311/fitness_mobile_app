@@ -1,0 +1,126 @@
+.input-page {
+    background: #181818;
+    color: #ffffff;
+    text-align: center;
+    padding: 20px;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .input-page .header h2 {
+    font-size: 22px;
+    font-weight: bold;
+  }
+  
+  .input-page .header p {
+    font-size: 14px;
+    color: #bbbbbb;
+    margin-bottom: 20px;
+  }
+  
+  .carousel-container {
+    margin: 20px 0;
+    width: 100%;
+    max-width: 320px;
+    text-align: center;
+  }
+  
+  .carousel-container h3 {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .carousel {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    width: 100%;
+  }
+  
+  .carousel-items {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    scrollbar-width: none; /* Hide scrollbar for modern browsers */
+  }
+  
+  .carousel-items::-webkit-scrollbar {
+    display: none; /* Hide scrollbar for Webkit-based browsers */
+  }
+  
+  .carousel-item {
+    font-size: 18px;
+    color: #bbbbbb;
+    padding: 10px;
+    border-radius: 10px;
+    min-width: 60px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .carousel-item.selected {
+    background: #6e44ff;
+    color: #ffffff;
+    font-size: 23px;
+    font-weight: bold;
+    transform: scale(1.2);
+  }
+  
+  .arrow-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 24px;
+    background: none;
+    color: #ffffff31;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+  }
+  
+  .arrow-button.left {
+    left: 0;
+  }
+  
+  .arrow-button.right {
+    right: 0;
+  }
+  
+  .action-buttons {
+    display: flex;
+    gap: 20px;
+  }
+  
+  .back-button,
+  .continue-button {
+    padding: 10px 20px;
+    border-radius: 20px;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  
+  .back-button {
+    background: #444444;
+    color: #ffffff;
+  }
+  
+  .continue-button {
+    background: #6e44ff;
+    color: #ffffff;
+  }
+  
+  .continue-button:disabled {
+    background: #444444;
+    cursor: not-allowed;
+  }
+  

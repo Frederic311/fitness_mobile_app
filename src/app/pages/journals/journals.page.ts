@@ -1,7 +1,7 @@
 import { Component, OnInit,ViewChild } from '@angular/core';
 import { IonModal, LoadingController, ModalController, ToastController } from '@ionic/angular';
 import { OverlayEventDetail } from '@ionic/core/components';
-import { AuthServiceService } from 'src/app/auth-service.service';
+import { AuthServiceService } from 'src/app/services/auth/auth-service.service';
 import { Journal, JournalServiceService } from 'src/app/services/journal-service.service';
 import { JournalPage } from '../journal/journal.page';
 

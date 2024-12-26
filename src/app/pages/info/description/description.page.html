@@ -1,0 +1,75 @@
+<div class="input-page">
+  <div class="header">
+    <h2>Tell Us About Yourself</h2>
+    <p>Please provide your details to help us personalize your experience.</p>
+  </div>
+
+  <!-- Age Carousel -->
+  <div class="carousel-container">
+    <h3>How Old Are You?</h3>
+    <div class="carousel">
+      <button class="arrow-button left" (click)="scrollLeft()">&#10094;</button>
+      <div class="carousel-items">
+        <span
+          *ngFor="let age of ageOptions"
+          class="carousel-item"
+          [class.selected]="age === selectedAge"
+          (click)="selectAge(age)"
+        >
+          {{ age }}
+        </span>
+      </div>
+      <button class="arrow-button right" (click)="scrollRight()">&#10095;</button>
+    </div>
+  </div>
+
+  <!-- Height Carousel -->
+  <div class="carousel-container">
+    <h3>What Is Your Height?</h3>
+    <div class="carousel">
+      <button class="arrow-button left" (click)="scrollLeft()">&#10094;</button>
+      <div class="carousel-items">
+        <span
+          *ngFor="let height of heightOptions"
+          class="carousel-item"
+          [class.selected]="height === selectedHeight"
+          (click)="selectHeight(height)"
+        >
+          {{ height }} cm
+        </span>
+      </div>
+      <button class="arrow-button right" (click)="scrollRight()">&#10095;</button>
+    </div>
+  </div>
+
+  <!-- Weight Carousel -->
+  <div class="carousel-container">
+    <h3>What Is Your Weight?</h3>
+    <div class="carousel">
+      <button class="arrow-button left" (click)="scrollLeft()">&#10094;</button>
+      <div class="carousel-items">
+        <span
+          *ngFor="let weight of weightOptions"
+          class="carousel-item"
+          [class.selected]="weight === selectedWeight"
+          (click)="selectWeight(weight)"
+        >
+          {{ weight }} kg
+        </span>
+      </div>
+      <button class="arrow-button right" (click)="scrollRight()">&#10095;</button>
+    </div>
+  </div>
+
+  <!-- Action Buttons -->
+  <div class="action-buttons">
+    <button class="back-button" (click)="goBack()">Back</button>
+    <button
+      class="continue-button"
+      [disabled]="!selectedAge || !selectedHeight || !selectedWeight"
+      (click)="submitDetails()"
+    >
+      Continue
+    </button>
+  </div>
+</div>

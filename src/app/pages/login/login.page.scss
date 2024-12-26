@@ -1,6 +1,7 @@
 
 .input{
     font-weight: 300;
+    color: black;
 }
 ion-item {
     --background: #f1f1f1;
@@ -20,7 +21,8 @@ ion-item {
         font-size: 2rem;
     }
 }
-.signupLink{
+.sign{
+    margin-top: 100px;
     display: flex;
     margin: auto;
     flex-direction: row;
@@ -29,7 +31,7 @@ ion-item {
   position: absolute;
   left: 0;
   right: 0;
-  bottom: 0;
+  bottom: 30;
   width: 80%;
     .p{
         font-size: 0.9em;
@@ -40,7 +42,7 @@ ion-item {
 }
 .forgotpassword{
     display: flex;
-    justify-content: flex-end;
+    justify-content:  center;
     a {
     font-weight: 400;
     font-size: 0.8em;
@@ -53,3 +55,9 @@ ion-item {
     font-size: small;
     padding-top: -16px;
 }
+ion-icon {
+    position: absolute;
+    right: 10px;
+    color: gray;
+    font-size: 1.2rem;
+  }

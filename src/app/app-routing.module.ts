@@ -56,14 +56,6 @@ const routes: Routes = [
     loadChildren: () => import('./pages/splashes/workout2/workout2.module').then( m => m.Workout2PageModule)
   },
   {
-    path: 'role',
-    loadChildren: () => import('./pages/creation/role/role.module').then( m => m.RolePageModule)
-  },
-  {
-    path: 'profile',
-    loadChildren: () => import('./pages/creation/profile/profile.module').then( m => m.ProfilePageModule)
-  },
-  {
     path: 'perso',
     loadChildren: () => import('./pages/info/perso/perso.module').then( m => m.PersoPageModule)
   },
@@ -71,6 +63,12 @@ const routes: Routes = [
     path: 'role',
     loadChildren: () => import('./pages/info/role/role.module').then( m => m.RolePageModule)
   },
+
+  {
+    path: 'description',
+    loadChildren: () => import('./pages/info/description/description.module').then( m => m.DescriptionPageModule)
+  },
+
 
 
   

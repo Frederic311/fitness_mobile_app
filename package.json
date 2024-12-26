@@ -28,6 +28,7 @@
     "@ionic/cordova-builders": "^11.0.0",
     "cordova-android": "10.1.2",
     "firebase": "^9.23.0",
+    "firestore": "^1.1.6",
     "ionicons": "^7.0.0",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",
