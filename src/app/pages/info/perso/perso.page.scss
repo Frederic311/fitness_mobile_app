@@ -90,4 +90,17 @@
   .skip-button {
     margin-top: 10px;
   }
+  .error-message {
+    background-color: #e74c3c;
+    color: #ffffff;
+    padding: 10px 15px;
+    border-radius: 10px;
+    font-weight: bold;
+    text-align: center;
+    margin: 20px 0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 90%;
+    margin: 0 auto;
+    margin-bottom: 10px;
+  }
   

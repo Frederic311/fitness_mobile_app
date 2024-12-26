@@ -1,7 +1,6 @@
 <ion-content>
   <div class="profile-container">
     <!-- Avatar with default image and upload feature -->
- 
 
     <!-- Hidden file input -->
     <input 
@@ -14,11 +13,16 @@
 
     <!-- Title and description -->
     <h1>Fill Your Profile</h1>
-    <p>Don't worry, you can always change it later, or you can skip it for now.</p>
+    <!-- <p>Don't worry, you can always change it later, or you can skip it for now.</p> -->
 
     <ion-avatar class="avatar" (click)="triggerFileInput()">
       <img [src]="profilePicture || 'assets/images/default-avatar.png'" alt="Profile Picture" />
     </ion-avatar>
+
+    <!-- Error message display -->
+    <div *ngIf="errorMessage" class="error-message">
+      {{ errorMessage }}
+    </div>
 
     <!-- Profile form -->
     <form (ngSubmit)="submitForm()">
@@ -82,13 +86,5 @@
         type="submit"
       >Submit</ion-button>
     </form>
-
-    <!-- Skip button -->
-    <!-- <ion-button 
-      expand="full" 
-      class="skip-button" 
-      fill="clear" 
-      (click)="skipProfile()"
-    >Skip</ion-button> -->
   </div>
 </ion-content>

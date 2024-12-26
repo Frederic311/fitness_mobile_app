@@ -1,0 +1,73 @@
+.level-container {
+    background: #181818;
+    color: #ffffff;
+    text-align: center;
+    padding: 20px;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .level-container h1 {
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  
+  .sports-level,
+  .sports-criteria {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 20px;
+    width: 100%;
+  }
+  
+  .sports-level label,
+  .sports-criteria label {
+    font-size: 18px;
+    color: #bbbbbb;
+    margin-bottom: 10px;
+  }
+  
+  input[type="radio"],
+  input[type="checkbox"] {
+    margin-right: 10px;
+  }
+  
+  .error-message {
+    color: #e74c3c;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  
+  ion-button {
+    --background: #6e44ff;
+    --border-radius: 20px;
+    margin-top: 10px;
+  }
+  
+  ion-button:hover {
+    --background: #5a34cf;
+  }
+  
+  ion-avatar {
+    --border-radius: 50%;
+  }
+  
+  @media (min-width: 768px) {
+    .sports-level,
+    .sports-criteria {
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+  
+    .sports-level label,
+    .sports-criteria label {
+      width: 200px;
+    }
+  }
+  

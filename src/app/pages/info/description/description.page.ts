@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from '../../../services/auth/auth-service.service';
 
 @Component({
   selector: 'app-description',
@@ -14,8 +15,9 @@ export class DescriptionPage {
   selectedAge: number | null = null;
   selectedHeight: number | null = null;
   selectedWeight: number | null = null;
+  errorMessage: string | null = null;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private authService: AuthService) {}
 
   // Select values
   selectAge(age: number): void {
@@ -47,16 +49,32 @@ export class DescriptionPage {
   }
 
   // Submit details and complete the process
-  submitDetails(): void {
+  async submitDetails(): Promise<void> {
     if (this.selectedAge && this.selectedHeight && this.selectedWeight) {
-      console.log({
-        age: this.selectedAge,
-        height: this.selectedHeight,
-        weight: this.selectedWeight,
-      });
-      this.router.navigate(['/home']); // Navigate to the next page
+      try {
+        const user = await this.authService.getProfile();
+        if (user && user.uid) {
+          await this.authService.updateUserDetails(user.uid, {
+            age: this.selectedAge,
+            height: this.selectedHeight,
+            weight: this.selectedWeight,
+          });
+          console.log('User details saved:', {
+            age: this.selectedAge,
+            height: this.selectedHeight,
+            weight: this.selectedWeight,
+          });
+          this.router.navigate(['/level']); // Navigate to the next page
+        } else {
+          this.errorMessage = 'User not found. Please log in again.';
+        }
+      } catch (error) {
+        const errorMessage = (error as any).message || error;
+        this.errorMessage = 'Error saving details: ' + errorMessage;
+        console.error('Error saving details:', error);
+      }
     } else {
-      console.error('Complete all fields before continuing.');
+      this.errorMessage = 'Complete all fields before continuing.';
     }
   }
 }

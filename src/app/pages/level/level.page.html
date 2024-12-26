@@ -1,0 +1,41 @@
+<ion-content>
+  <div class="level-container">
+    <h1>Select Your Sports Level</h1>
+
+    <!-- Sports Level Selection -->
+    <div class="sports-level">
+      <label *ngFor="let level of sportsLevels">
+        <input 
+          type="radio" 
+          name="sportsLevel" 
+          [value]="level" 
+          (change)="selectSportsLevel(level)" 
+        />
+        {{ level }}
+      </label>
+    </div>
+
+    <h1>Select Your Sports Criteria</h1>
+
+    <!-- Sports Criteria Selection -->
+    <div class="sports-criteria">
+      <label *ngFor="let sport of sportsOptions">
+        <input 
+          type="checkbox" 
+          [value]="sport" 
+          (change)="toggleSportSelection(sport)" 
+        />
+        {{ sport }}
+      </label>
+    </div>
+
+    <!-- Error Message Display -->
+    <div *ngIf="errorMessage" class="error-message">
+      {{ errorMessage }}
+    </div>
+
+    <!-- Navigation Buttons -->
+    <ion-button expand="full" (click)="submitSportsDetails()">Submit</ion-button>
+    <ion-button expand="full" (click)="goBack()">Back</ion-button>
+  </div>
+</ion-content>

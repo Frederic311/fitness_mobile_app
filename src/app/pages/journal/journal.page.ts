@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ModalController, ToastController } from '@ionic/angular';
-import { Journal, JournalServiceService } from 'src/app/services/journal-service.service';
+import { Journal, JournalServiceService } from '../../services/journal/journal-service.service';
 
 @Component({
   selector: 'app-journal',

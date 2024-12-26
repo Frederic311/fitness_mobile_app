@@ -1,8 +1,8 @@
 import { Component, OnInit,ViewChild } from '@angular/core';
 import { IonModal, LoadingController, ModalController, ToastController } from '@ionic/angular';
 import { OverlayEventDetail } from '@ionic/core/components';
-import { AuthServiceService } from 'src/app/services/auth/auth-service.service';
-import { Journal, JournalServiceService } from 'src/app/services/journal-service.service';
+import { AuthService } from 'src/app/services/auth/auth-service.service';
+import { Journal, JournalServiceService } from '../../services/journal/journal-service.service';
 import { JournalPage } from '../journal/journal.page';
 
 @Component({
@@ -24,13 +24,13 @@ export class JournalsPage implements OnInit {
   createdAt: undefined,
 }
   journals:Journal[] = []
-  constructor(private modalCtrl: ModalController,private toastCtrl: ToastController,private loadingController: LoadingController,private journalServive:JournalServiceService,private authService:AuthServiceService) {
-   }
+  constructor(private modalCtrl: ModalController,private toastCtrl: ToastController,private loadingController: LoadingController,private journalService:JournalServiceService,private authService:AuthService) {
+     }
 
 
   addJournal(){
        
-      this.journalServive.addJournal(
+      this.journalService.addJournal(
         {userId:"", title:this.title,content:this.note,createdAt:new Date()}
       )?.then(async ()=>{
         this.title =''
@@ -71,7 +71,7 @@ export class JournalsPage implements OnInit {
     this.authService.getProfile().then(user => {
       this.userId = user?.uid;
       console.log(user?.uid);
-      this.journalServive.getJournals(this.userId).subscribe(res =>{
+      this.journalService.getJournals(this.userId).subscribe(res =>{
         this.journals = res
         console.log(this.journals);
         

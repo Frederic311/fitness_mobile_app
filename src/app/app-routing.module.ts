@@ -68,6 +68,16 @@ const routes: Routes = [
     path: 'description',
     loadChildren: () => import('./pages/info/description/description.module').then( m => m.DescriptionPageModule)
   },
+  {
+    path: 'level',
+    loadChildren: () => import('./pages/level/level.module').then( m => m.LevelPageModule)
+  },
+  {
+    path: 'banner',
+    loadChildren: () => import('./pages/info/banner/banner.module').then( m => m.BannerPageModule)
+  },
+
+
 
 
 

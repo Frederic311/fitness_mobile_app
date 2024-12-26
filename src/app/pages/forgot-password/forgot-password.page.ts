@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthServiceService } from 'src/app/services/auth/auth-service.service';
+import { AuthService } from 'src/app/services/auth/auth-service.service';
 import { ToastController } from '@ionic/angular';
 import { Router } from '@angular/router';
 
@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 })
 export class ForgotPasswordPage implements OnInit {
 email:any
-  constructor(private authService:AuthServiceService,private toastController: ToastController,private router: Router) { }
+  constructor(private authService:AuthService,private toastController: ToastController,private router: Router) { }
 
   ngOnInit() {
   }

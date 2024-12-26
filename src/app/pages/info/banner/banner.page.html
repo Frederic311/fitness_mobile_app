@@ -1,0 +1,42 @@
+<ion-content>
+  <div class="banner-container">
+    <h1>Choose your Banner , add a decription and price</h1>
+    
+    <!-- Banner Image Upload -->
+    <ion-avatar class="avatar" (click)="triggerFileInput()">
+      <img [src]="bannerImage || 'assets/images/banner.png'" alt="Banner Image" />
+    </ion-avatar>
+    <input 
+      type="file" 
+      id="fileInput" 
+      accept="image/*" 
+      (change)="onBannerSelected($event)" 
+      hidden 
+    />
+
+    <!-- Description Input -->
+    <ion-item>
+      <ion-label position="floating">Description</ion-label>
+      <ion-textarea [(ngModel)]="description" name="description" required></ion-textarea>
+    </ion-item>
+
+    <!-- Session Price Input -->
+    <ion-item>
+      <ion-label position="floating">Prix d'une Séance</ion-label>
+      <ion-input 
+        type="number" 
+        [(ngModel)]="sessionPrice" 
+        name="sessionPrice" 
+        required
+      ></ion-input>
+    </ion-item>
+
+    <!-- Error Message Display -->
+    <div *ngIf="errorMessage" class="error-message">
+      {{ errorMessage }}
+    </div>
+
+    <!-- Submit Button -->
+    <ion-button expand="full" (click)="submitBannerDetails()">Submit</ion-button>
+  </div>
+</ion-content>
