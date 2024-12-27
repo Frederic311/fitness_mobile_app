@@ -75,7 +75,15 @@ const routes: Routes = [
   {
     path: 'banner',
     loadChildren: () => import('./pages/info/banner/banner.module').then( m => m.BannerPageModule)
+  },  {
+    path: 'main-user',
+    loadChildren: () => import('./pages/main/main-user/main-user.module').then( m => m.MainUserPageModule)
   },
+  {
+    path: 'main-coach',
+    loadChildren: () => import('./pages/main/main-coach/main-coach.module').then( m => m.MainCoachPageModule)
+  },
+
 
 
 

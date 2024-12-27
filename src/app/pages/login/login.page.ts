@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService } from 'src/app/services/auth/auth-service.service';
+import { AuthService, Users } from 'src/app/services/auth/auth-service.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AlertController, LoadingController } from '@ionic/angular';
 import { ToastController } from '@ionic/angular';
@@ -13,11 +13,14 @@ import { ToastController } from '@ionic/angular';
 export class LoginPage implements OnInit {
   ionicForm: FormGroup;
 
-  // email:any
-  // password:any
-  // contact:any
-
-  constructor(private toastController: ToastController, private alertController: AlertController, private loadingController: LoadingController, private authService: AuthService, private router: Router, public formBuilder: FormBuilder) { }
+  constructor(
+    private toastController: ToastController,
+    private alertController: AlertController,
+    private loadingController: LoadingController,
+    private authService: AuthService,
+    private router: Router,
+    public formBuilder: FormBuilder
+  ) {}
 
   ngOnInit() {
     this.ionicForm = this.formBuilder.group({
@@ -29,42 +32,47 @@ export class LoginPage implements OnInit {
         ],
       ],
       password: ['', [
-        // Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{8,}'),
         Validators.required,
-      ]
-      ],
+      ]],
     });
   }
 
   async login() {
     const loading = await this.loadingController.create();
     await loading.present();
-    // console.log(this.email + this.password);
-    if (this.ionicForm.valid) {
 
-      //  await  loading.dismiss();
+    if (this.ionicForm.valid) {
       const user = await this.authService.loginUser(this.ionicForm.value.email, this.ionicForm.value.password).catch((err) => {
-        this.presentToast(err)
+        this.presentToast(err);
         console.log(err);
         loading.dismiss();
-      })
+      });
 
       if (user) {
-        console.log(user);
-        loading.dismiss();
-        this.router.navigate(
-          ['/journals'])
+        this.authService.fetchUserProfile(user.uid).then((profile: Users | null) => {
+          loading.dismiss();
+          if (profile?.role === 'Coach') {
+            this.router.navigate(['/main-coach']);
+          } else {
+            this.router.navigate(['/main-user']);
+          }
+        }).catch(error => {
+          console.error('Error fetching user profile:', error);
+          loading.dismiss();
+          this.presentToast('Error fetching user profile. Please try again.');
+        });
       }
     } else {
-      return console.log('Please provide all the required values!');
+      loading.dismiss();
+      console.log('Please provide all the required values!');
     }
-
   }
+
   get errorControl() {
     return this.ionicForm.controls;
   }
 
-  async presentToast(message: undefined) {
+  async presentToast(message: string) {
     console.log(message);
 
     const toast = await this.toastController.create({

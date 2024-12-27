@@ -1,0 +1,41 @@
+<ion-content>
+  <div class="user-container">
+    <!-- User Info -->
+    <div *ngIf="user" class="user-info">
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title>{{ user.name }}</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <div class="info-item">
+            <ion-icon name="walk-outline"></ion-icon>
+            <p><strong>Total Distance:</strong> {{ totalDistance }} km</p>
+          </div>
+          <div class="info-item">
+            <ion-icon name="time-outline"></ion-icon>
+            <p><strong>Total Duration:</strong> {{ totalDuration }} hours</p>
+          </div>
+        </ion-card-content>
+      </ion-card>
+    </div>
+
+    <!-- List of Coaches -->
+    <div class="coaches-list">
+      <h3>Available Coaches</h3>
+      <div *ngFor="let coach of coaches" class="coach-item" [style.background-image]="'url(' + (coach.bannerImage || 'assets/images/default-banner.png') + ')'">
+        <ion-avatar class="coach-profile">
+          <img [src]="coach.profilePicture || 'assets/images/default-avatar.png'" alt="Coach Profile Picture">
+        </ion-avatar>
+        <div class="coach-info">
+          <h4>{{ coach.name }}</h4>
+          <p><strong>Price:</strong> {{ coach.sessionPrice }} FCFA</p>
+          <p>{{ coach.description }}</p>
+          <ion-button (click)="bookSession(coach.uid)">Réserver une séance</ion-button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sign Out Button -->
+    <ion-button expand="full" (click)="signOut()">Sign Out</ion-button>
+  </div>
+</ion-content>

@@ -1,0 +1,21 @@
+<ion-content>
+  <div class="coach-container">
+    <!-- Coach Info -->
+    <div *ngIf="user">
+      <h2>{{ user.name }}</h2>
+    </div>
+
+    <!-- List of Reservations -->
+    <div class="reservations-list">
+      <h3>Reservations</h3>
+      <div *ngFor="let reservation of reservations" class="reservation-item">
+        <p><strong>Client:</strong> {{ reservation.clientName }}</p>
+        <p><strong>Session Date:</strong> {{ reservation.sessionDate }}</p>
+        <p><strong>Session Time:</strong> {{ reservation.sessionTime }}</p>
+      </div>
+    </div>
+
+    <!-- Sign Out Button -->
+    <ion-button expand="full" (click)="signOut()">Sign Out</ion-button>
+  </div>
+</ion-content>

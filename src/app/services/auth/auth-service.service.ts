@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { User } from '@firebase/auth';
-import { Firestore, doc, setDoc, getDoc, DocumentSnapshot, updateDoc } from '@angular/fire/firestore';
+import { Firestore, doc, setDoc, getDoc, DocumentSnapshot, updateDoc, collection, getDocs, query, where } from '@angular/fire/firestore';
 
 export interface Users {
   name: string;
@@ -18,6 +18,8 @@ export interface Users {
   sportsCriteria?: string[];
   description?: string;
   sessionPrice?: number;
+  totalDistance?: number;
+  totalDuration?: number;
 }
 
 @Injectable({
@@ -147,6 +149,38 @@ export class AuthService {
       }
     } catch (error: any) {
       console.error('Error fetching user profile:', error.message || error);
+      throw error;
+    }
+  }
+
+  // Fetch all coaches from Firestore
+  async fetchCoaches(): Promise<Users[]> {
+    try {
+      const coaches: Users[] = [];
+      const coachesQuery = query(collection(this.firestore, 'users'), where('role', '==', 'Coach'));
+      const querySnapshot = await getDocs(coachesQuery);
+      querySnapshot.forEach((doc) => {
+        coaches.push(doc.data() as Users);
+      });
+      return coaches;
+    } catch (error: any) {
+      console.error('Error fetching coaches:', error.message || error);
+      throw error;
+    }
+  }
+
+  // Fetch all reservations for a coach by email from Firestore
+  async fetchReservations(coachEmail: string): Promise<any[]> {
+    try {
+      const reservations: any[] = [];
+      const reservationsQuery = query(collection(this.firestore, 'reservations'), where('coachEmail', '==', coachEmail));
+      const querySnapshot = await getDocs(reservationsQuery);
+      querySnapshot.forEach((doc) => {
+        reservations.push(doc.data());
+      });
+      return reservations;
+    } catch (error: any) {
+      console.error('Error fetching reservations:', error.message || error);
       throw error;
     }
   }
