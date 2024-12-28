@@ -30,7 +30,7 @@
           <h4>{{ coach.name }}</h4>
           <p><strong>Price:</strong> {{ coach.sessionPrice }} FCFA</p>
           <p>{{ coach.description }}</p>
-          <ion-button (click)="bookSession(coach.uid)">Réserver une séance</ion-button>
+          <ion-button (click)="bookSession(coach.email)">Réserver une séance</ion-button>
         </div>
       </div>
     </div>
@@ -38,4 +38,24 @@
     <!-- Sign Out Button -->
     <ion-button expand="full" (click)="signOut()">Sign Out</ion-button>
   </div>
-</ion-content>
+<!-- 
+  <div class="user-container">
+    <h3>Upcoming Sessions</h3>
+    <ion-card *ngFor="let session of sessions">
+      <ion-card-header>
+        <ion-card-title>{{ session.goal }}</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <p><strong>Start Time:</strong> {{ session.startDateTime | date: 'short' }}</p>
+        <p><strong>Sport Type:</strong> {{ session.sportType }}</p>
+        <p><strong>Status:</strong> {{ session.status }}</p>
+        <div *ngFor="let exercise of session.exercises">
+          <h4>{{ exercise.exerciseType }}</h4>
+          <p><strong>Duration:</strong> {{ exercise.duration | duration }}</p>
+          <p><strong>Repetitions:</strong> {{ exercise.repetitions }}</p>
+          <img [src]="exercise.mediaUrl" *ngIf="exercise.mediaUrl">
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content> -->

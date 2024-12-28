@@ -1,0 +1,88 @@
+.coach-container {
+    background: #181818;
+    color: #ffffff;
+    padding: 20px;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  
+  h3 {
+    font-size: 22px;
+    font-weight: bold;
+    color: #ffffff;
+    margin-bottom: 20px;
+  }
+  
+  ion-card {
+    --background: #202020;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    margin-bottom: 10px;
+  }
+  
+  ion-card-title {
+    font-size: 18px;
+    color: #ffffff;
+  }
+  
+  ion-card-content {
+    color: #bbbbbb;
+  }
+  
+  .coach-banner {
+    background-size: cover;
+    background-position: center;
+    border-radius: 12px;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .coach-avatar img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 3px solid #6e44ff;
+  }
+  
+  .info-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+  }
+  
+  ion-icon {
+    font-size: 24px;
+    color: #6e44ff;
+  }
+  
+  ion-button {
+    --background: #6e44ff;
+    --border-radius: 20px;
+  }
+  
+  ion-button:hover {
+    --background: #5a34cf;
+  }
+  
+  /* Reservation Image Styling */
+  .reservation-item {
+    display: flex;
+    align-items: center;
+  }
+  
+  .reservation-avatar {
+    margin-right: 10px;
+  }
+  
+  .reservation-avatar img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 2px solid #6e44ff;
+  }
+  

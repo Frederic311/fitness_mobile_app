@@ -46,7 +46,7 @@ export class BannerPage {
             description: this.description,
             sessionPrice: this.sessionPrice,
           });
-          this.router.navigate(['/home']); // Navigate to the home page
+          this.router.navigate(['/main-coach']); // Navigate to the home page
         } else {
           this.errorMessage = 'User not found. Please log in again.';
         }

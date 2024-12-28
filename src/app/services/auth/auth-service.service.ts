@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { User } from '@firebase/auth';
-import { Firestore, doc, setDoc, getDoc, DocumentSnapshot, updateDoc, collection, getDocs, query, where } from '@angular/fire/firestore';
+import { Firestore, doc, setDoc, getDoc, DocumentSnapshot, updateDoc, collection, getDocs, query, where, addDoc, deleteDoc } from '@angular/fire/firestore';
 
 export interface Users {
   name: string;
@@ -20,8 +20,23 @@ export interface Users {
   sessionPrice?: number;
   totalDistance?: number;
   totalDuration?: number;
+  reservations?: any[];
 }
-
+export interface Exercise {
+  exerciseType: string;
+  duration: number; // in seconds
+  repetitions: number;
+  mediaUrl: string;
+}
+export interface Session {
+  sessionId?: string; // Optional, to be added by Firestore 
+  coachEmail: string
+  goal: string;
+  startDateTime: Date;
+  sportType: string;
+  exercises: Exercise[];
+  status: string; // 'Pending', 'Accepted', 'Completed' 
+}
 @Injectable({
   providedIn: 'root',
 })
@@ -29,7 +44,7 @@ export class AuthService {
   constructor(
     private ngFireAuth: AngularFireAuth,
     private firestore: Firestore
-  ) {}
+  ) { }
 
   // Register a new user and save profile data in Firestore
   async registerUser(email: string, password: string, name: string): Promise<User | null> {
@@ -38,7 +53,7 @@ export class AuthService {
       const user = userCredential.user;
 
       if (user) {
-        await this.saveUserProfile(user.uid, { name, email });
+        await this.saveUserProfile(user.uid, { name, email, totalDistance: 0, totalDuration: 0 });
       }
       return user as User;
     } catch (error: any) {
@@ -169,19 +184,64 @@ export class AuthService {
     }
   }
 
-  // Fetch all reservations for a coach by email from Firestore
-  async fetchReservations(coachEmail: string): Promise<any[]> {
+   async fetchSessions(coachEmail: string): Promise<Session[]> {
     try {
-      const reservations: any[] = [];
-      const reservationsQuery = query(collection(this.firestore, 'reservations'), where('coachEmail', '==', coachEmail));
-      const querySnapshot = await getDocs(reservationsQuery);
+      const sessionsQuery = query(collection(this.firestore, 'sessions'), where('coachEmail', '==', coachEmail));
+      const querySnapshot = await getDocs(sessionsQuery);
+
+      const sessions: Session[] = [];
       querySnapshot.forEach((doc) => {
-        reservations.push(doc.data());
+        const data = doc.data() as Session;
+        data.sessionId = doc.id; // Assign the document ID to sessionId
+        
+        // Properly convert Firestore timestamp to JavaScript Date object
+        if (data.startDateTime && (data.startDateTime as any).seconds) {
+          data.startDateTime = new Date((data.startDateTime as any).seconds * 1000);
+        }
+        
+        sessions.push(data);
       });
-      return reservations;
+      return sessions;
     } catch (error: any) {
-      console.error('Error fetching reservations:', error.message || error);
+      console.error('Error fetching sessions:', error.message || error);
       throw error;
     }
   }
+
+  // Create a new session 
+  async createSession(session: Session): Promise<void> {
+    try {
+      const sessionsCollection = collection(this.firestore, 'sessions');
+      await addDoc(sessionsCollection, session);
+    }
+    catch (error: any) {
+      console.error('Error creating session:', error.message || error);
+      throw error;
+    }
+  }
+
+  // Update session
+  async updateSession(sessionId: string, session: Partial<Session>): Promise<void> {
+    try {
+      const sessionDocRef = doc(this.firestore, `sessions/${sessionId}`);
+      await updateDoc(sessionDocRef, session);
+    }
+    catch (error: any) {
+      console.error('Error updating session:', error.message || error);
+      throw error;
+    }
+  }
+
+
+  // Delete session 
+  async deleteSession(sessionId: string): Promise<void> {
+    try {
+      const sessionDocRef = doc(this.firestore, `sessions/${sessionId}`);
+      await deleteDoc(sessionDocRef);
+    }
+    catch (error: any) { console.error('Error deleting session:', error.message || error); throw error; }
+  }
 }
+
+
+

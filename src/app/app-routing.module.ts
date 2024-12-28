@@ -83,6 +83,10 @@ const routes: Routes = [
     path: 'main-coach',
     loadChildren: () => import('./pages/main/main-coach/main-coach.module').then( m => m.MainCoachPageModule)
   },
+  {
+    path: 'coach-session',
+    loadChildren: () => import('./pages/main/coach-session/coach-session.module').then( m => m.CoachSessionPageModule)
+  },
 
 
 

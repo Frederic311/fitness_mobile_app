@@ -1,19 +1,45 @@
 <ion-content>
   <div class="coach-container">
     <!-- Coach Info -->
-    <div *ngIf="user">
-      <h2>{{ user.name }}</h2>
+    <div *ngIf="user" class="coach-info">
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title>{{ user.name }}</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <div class="coach-banner" [style.background-image]="'url(' + (user.bannerImage || 'assets/images/default-banner.png') + ')'">
+            <ion-avatar class="coach-avatar">
+              <img [src]="user.profilePicture || 'assets/images/default-avatar.png'" alt="Coach Profile Picture">
+            </ion-avatar>
+          </div>
+          <div class="info-item">
+            <ion-icon name="person-outline"></ion-icon>
+            <p><strong>Email:</strong> {{ user.email }}</p>
+          </div>
+        </ion-card-content>
+      </ion-card>
     </div>
 
     <!-- List of Reservations -->
     <div class="reservations-list">
       <h3>Reservations</h3>
-      <div *ngFor="let reservation of reservations" class="reservation-item">
-        <p><strong>Client:</strong> {{ reservation.clientName }}</p>
-        <p><strong>Session Date:</strong> {{ reservation.sessionDate }}</p>
-        <p><strong>Session Time:</strong> {{ reservation.sessionTime }}</p>
-      </div>
+      <ion-card *ngFor="let reservation of reservations" class="reservation-item">
+        <ion-card-header>
+          <ion-avatar class="reservation-avatar" slot="start">
+            <img [src]="reservation.userProfilePicture || 'assets/images/default-avatar.png'" alt="User Profile Picture">
+          </ion-avatar>
+          <ion-card-title>{{ reservation.userName }}</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <p><strong>Email:</strong> {{ reservation.userEmail }}</p>
+          <p><strong>Session Date:</strong> {{ reservation.sessionDate }}</p>
+          <p><strong>Session Time:</strong> {{ reservation.sessionTime }}</p>
+        </ion-card-content>
+      </ion-card>
     </div>
+
+    <!-- Button to Navigate to Coach Sessions -->
+    <ion-button expand="full" (click)="navigateToCoachSessions()">Manage Your Sessions</ion-button>
 
     <!-- Sign Out Button -->
     <ion-button expand="full" (click)="signOut()">Sign Out</ion-button>

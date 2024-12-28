@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService, Users } from '../../../services/auth/auth-service.service';
+import { AuthService, Session, Users } from '../../../services/auth/auth-service.service';
+import { BookingService } from '../../../services/booking/booking.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -9,11 +10,12 @@ import { Router } from '@angular/router';
 })
 export class MainUserPage implements OnInit {
   user: Users | null = null;
+  sessions: Session[] = [];
   coaches: Users[] = [];
   totalDistance: number = 0;
   totalDuration: number = 0;
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private authService: AuthService, private bookingService: BookingService, private router: Router) {}
 
   ngOnInit(): void {
     this.authService.getProfile().then(user => {
@@ -39,11 +41,34 @@ export class MainUserPage implements OnInit {
       console.error('Error fetching coaches:', error);
     });
   }
-  
+  loadSessions(userEmail: string): void { 
+    this.bookingService.fetchSessions(userEmail).then(sessions => { 
+      this.sessions = sessions; }).catch(error => 
+        { console.error('Error fetching sessions:', error); }); }
 
-  bookSession(coachId: string): void {
-    // Implement booking logic here
-    console.log(`Booking session with coach ID: ${coachId}`);
+  async bookSession(coachEmail: string): Promise<void> {
+    if (this.user && this.user.name && this.user.email && this.user.profilePicture) {
+      try {
+        await this.bookingService.bookSession(coachEmail, this.user.name, this.user.email, this.user.profilePicture);
+        console.log(`Booking session with coach email: ${coachEmail}`);
+        this.presentToast('Session booked successfully');
+      } catch (error) {
+        console.error('Error booking session:', error);
+        this.presentToast('Error booking session. Please try again.');
+      }
+    } else {
+      this.presentToast('User information is missing. Please log in again.');
+    }
+  }
+
+  async presentToast(message: string) {
+    const toast = document.createElement('ion-toast');
+    toast.message = message;
+    toast.duration = 2000;
+    toast.position = 'top';
+
+    document.body.appendChild(toast);
+    await toast.present();
   }
 
   signOut(): void {

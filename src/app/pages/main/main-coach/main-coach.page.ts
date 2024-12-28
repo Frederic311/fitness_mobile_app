@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService, Users } from '../../../services/auth/auth-service.service';
+import { BookingService } from '../../../services/booking/booking.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -11,7 +12,7 @@ export class MainCoachPage implements OnInit {
   user: Users | null = null;
   reservations: any[] = [];
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private authService: AuthService, private bookingService: BookingService, private router: Router) {}
 
   ngOnInit(): void {
     this.authService.getProfile().then(user => {
@@ -31,11 +32,15 @@ export class MainCoachPage implements OnInit {
   }
 
   loadReservations(coachEmail: string): void {
-    this.authService.fetchReservations(coachEmail).then(reservations => {
+    this.bookingService.fetchReservations(coachEmail).then(reservations => {
       this.reservations = reservations;
     }).catch(error => {
       console.error('Error fetching reservations:', error);
     });
+  }
+
+  navigateToCoachSessions(): void {
+    this.router.navigate(['/coach-session']);
   }
 
   signOut(): void {

@@ -1,0 +1,76 @@
+<div class="coach-container">
+  <ion-header>
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-button (click)="goBack()">
+          <ion-icon slot="icon-only" name="arrow-back-outline"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+      <ion-title>Coach Sessions</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content>
+    <h3>Your Sessions</h3>
+    <div class="session-list">
+      <div *ngFor="let session of sessions" class="session-card">
+        <div class="session-header">
+          <h4>{{ session.goal }}</h4>
+        </div>
+        <div class="session-content">
+          <p><strong>Start Time:</strong> {{ session.startDateTime | date: 'short' }}</p>
+          <p><strong>Sport Type:</strong> {{ session.sportType }}</p>
+          <p><strong>Status:</strong> {{ session.status }}</p>
+          <div *ngFor="let exercise of session.exercises" class="exercise">
+            <h5>{{ exercise.exerciseType }}</h5>
+            <p><strong>Duration:</strong> {{ exercise.duration / 60 }} min {{ exercise.duration % 60 }} sec</p>
+            <p><strong>Repetitions:</strong> {{ exercise.repetitions }}</p>
+            <div *ngIf="exercise.mediaUrl">
+              <video [src]="exercise.mediaUrl" controls></video>
+            </div>
+          </div>
+          <button (click)="editSession(session)">Edit</button>
+          <button (click)="deleteSession(session.sessionId!)" class="danger">Delete</button>
+        </div>
+      </div>
+    </div>
+
+    <button (click)="toggleCreateSessionForm()">{{ showCreateSessionForm ? 'Cancel' : 'Create New Session' }}</button>
+
+    <div *ngIf="showCreateSessionForm" class="popup">
+      <div class="popup-content">
+        <span class="close-btn" (click)="toggleCreateSessionForm()">&times;</span>
+        <!-- Session Form -->
+        <h3>{{ editingSessionId ? 'Edit Session' : 'Create New Session' }}</h3>
+        <div class="form-group">
+          <label for="goal">Goal</label>
+          <input type="text" id="goal" [(ngModel)]="newSession.goal">
+        </div>
+        <div class="form-group">
+          <label for="startDateTime">Start Date and Time</label>
+          <input type="datetime-local" id="startDateTime" [(ngModel)]="newSession.startDateTime">
+        </div>
+        <div class="form-group">
+          <label for="sportType">Sport Type</label>
+          <input type="text" id="sportType" [(ngModel)]="newSession.sportType">
+        </div>
+        <h4>Add Exercises</h4>
+        <div *ngFor="let exercise of newExercises; let i = index" class="form-group exercise-group">
+          <label for="exerciseType{{i}}">Exercise {{i + 1}} Type</label>
+          <input type="text" id="exerciseType{{i}}" [(ngModel)]="exercise.exerciseType">
+          <label for="duration{{i}}">Duration (seconds)</label>
+          <input type="number" id="duration{{i}}" [(ngModel)]="exercise.duration">
+          <label for="repetitions{{i}}">Repetitions</label>
+          <input type="number" id="repetitions{{i}}" [(ngModel)]="exercise.repetitions">
+          <label for="mediaUrl{{i}}">Media URL</label>
+          <input type="file" id="mediaUrl{{i}}" (change)="handleMediaFile($event, i)">
+          <button class="danger" (click)="removeExercise(i)">Remove</button>
+        </div>
+        <button (click)="addExercise()">Add Exercise</button>
+
+        <button (click)="editingSessionId ? updateSession() : createSession()">
+          {{ editingSessionId ? 'Update Session' : 'Create Session' }}
+        </button>
+      </div>
+    </div>
+  </ion-content>
+</div>

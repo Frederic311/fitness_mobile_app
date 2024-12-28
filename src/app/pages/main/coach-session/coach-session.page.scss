@@ -1,0 +1,166 @@
+.coach-container {
+  background: #181818; /* Dark background */
+  color: #f4f4f9; /* Light text for better readability */
+  padding: 0px;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+h3, h4 {
+  font-size: 24px;
+  font-weight: bold;
+  color: #f4f4f9;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.session-list {
+  flex-grow: 1;
+  overflow-y: auto;
+  margin-bottom: 20px;
+}
+
+.session-card {
+  background: #202020;
+  border-left: 6px solid #6e44ff; /* Left border to indicate session card */
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 15px;
+  padding: 15px;
+  transition: transform 0.2s;
+}
+
+.session-card:hover {
+  transform: scale(1.02); /* Slightly enlarge the card on hover */
+}
+
+.session-header {
+  font-size: 20px;
+  font-weight: bold;
+  color: #6e44ff;
+  border-bottom: 1px solid #444444;
+  padding-bottom: 10px;
+  margin-bottom: 15px;
+}
+
+.session-content {
+  color: #bbbbbb;
+}
+
+.exercise {
+  margin-top: 10px;
+  background: #303030; /* Darker background for exercises */
+  border-left: 4px solid #6e44ff; /* Left border to indicate exercise card */
+  border-radius: 8px;
+  padding: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.form-group {
+  background: #202020;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  padding: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.exercise-group {
+  background: #303030;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+}
+
+label {
+  display: block;
+  color: #f4f4f9;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+input {
+  width: 100%;
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #444444;
+  background: #202020;
+  color: #f4f4f9;
+}
+
+button {
+  background: #6e44ff;
+  border-radius: 20px;
+  padding: 10px 20px;
+  border: none;
+  color: #ffffff;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background 0.2s;
+}
+
+button.danger {
+  background: #ff4444;
+}
+
+button:hover {
+  background: #5a34cf;
+}
+
+button.danger:hover {
+  background: #cc3333;
+}
+
+.form-group input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.form-group input[type="number"]::-webkit-outer-spin-button,
+.form-group input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Popup Form Styling */
+.popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #202020;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  max-height: 80vh;
+  overflow-y: auto;
+  z-index: 1000;
+  width: 90%;
+  max-width: 600px;
+}
+
+.popup-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.close-btn {
+  align-self: flex-end;
+  font-size: 24px;
+  cursor: pointer;
+  color: #ffffff;
+  background: none;
+  border: none;
+  margin-bottom: 10px;
+}
+
+.close-btn:hover {
+  color: #ff4444;
+}
+
+/* Media Handling */
+.session-content video {
+  max-width: 100%;
+  border-radius: 5px;
+  margin-top: 10px;
+}
