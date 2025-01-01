@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService, Session, Users } from '../../../services/auth/auth-service.service';
 import { BookingService } from '../../../services/booking/booking.service';
 import { Router } from '@angular/router';
+import { Pedometer } from '@ionic-native/pedometer/ngx';
 
 @Component({
   selector: 'app-main-user',
@@ -14,8 +15,15 @@ export class MainUserPage implements OnInit {
   coaches: Users[] = [];
   totalDistance: number = 0;
   totalDuration: number = 0;
+  steps: number = 0;
+  distance: number = 0;
 
-  constructor(private authService: AuthService, private bookingService: BookingService, private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private bookingService: BookingService,
+    private router: Router,
+    private pedometer: Pedometer
+  ) {}
 
   ngOnInit(): void {
     this.authService.getProfile().then(user => {
@@ -32,6 +40,8 @@ export class MainUserPage implements OnInit {
     }).catch(error => {
       console.error('Error getting user profile:', error);
     });
+
+    this.startPedometer();
   }
 
   loadCoaches(): void {
@@ -41,9 +51,9 @@ export class MainUserPage implements OnInit {
       console.error('Error fetching coaches:', error);
     });
   }
-  loadSessions(userEmail: string): void { 
-    this.bookingService.fetchSessions(userEmail).then(sessions => { 
-      this.sessions = sessions; }).catch(error => 
+  loadSessions(userEmail: string): void {
+    this.bookingService.fetchSessions(userEmail).then(sessions => {
+      this.sessions = sessions; }).catch(error =>
         { console.error('Error fetching sessions:', error); }); }
 
   async bookSession(coachEmail: string): Promise<void> {
@@ -73,7 +83,15 @@ export class MainUserPage implements OnInit {
 
   signOut(): void {
     this.authService.signOut().then(() => {
-      this.router.navigate(['/landing']);
+      this.router.navigate(['/login']);
     });
+  }
+
+  startPedometer() {
+    this.pedometer.startPedometerUpdates()
+      .subscribe((data) => {
+        this.steps = data.numberOfSteps;
+        this.distance = this.steps * 0.0008; // Assuming average step length of 0.8 meters
+      });
   }
 }

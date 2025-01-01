@@ -15,6 +15,14 @@
             <ion-icon name="time-outline"></ion-icon>
             <p><strong>Total Duration:</strong> {{ totalDuration }} hours</p>
           </div>
+          <div class="info-item">
+            <ion-icon name="footsteps-outline"></ion-icon>
+            <p><strong>Steps:</strong> {{ steps }}</p>
+          </div>
+          <div class="info-item">
+            <ion-icon name="map-outline"></ion-icon>
+            <p><strong>Distance Walked:</strong> {{ distance.toFixed(2) }} km</p>
+          </div>
         </ion-card-content>
       </ion-card>
     </div>
@@ -38,24 +46,4 @@
     <!-- Sign Out Button -->
     <ion-button expand="full" (click)="signOut()">Sign Out</ion-button>
   </div>
-<!-- 
-  <div class="user-container">
-    <h3>Upcoming Sessions</h3>
-    <ion-card *ngFor="let session of sessions">
-      <ion-card-header>
-        <ion-card-title>{{ session.goal }}</ion-card-title>
-      </ion-card-header>
-      <ion-card-content>
-        <p><strong>Start Time:</strong> {{ session.startDateTime | date: 'short' }}</p>
-        <p><strong>Sport Type:</strong> {{ session.sportType }}</p>
-        <p><strong>Status:</strong> {{ session.status }}</p>
-        <div *ngFor="let exercise of session.exercises">
-          <h4>{{ exercise.exerciseType }}</h4>
-          <p><strong>Duration:</strong> {{ exercise.duration | duration }}</p>
-          <p><strong>Repetitions:</strong> {{ exercise.repetitions }}</p>
-          <img [src]="exercise.mediaUrl" *ngIf="exercise.mediaUrl">
-        </div>
-      </ion-card-content>
-    </ion-card>
-  </div>
-</ion-content> -->
+</ion-content>

@@ -14,6 +14,8 @@ import { AuthService } from './services/auth/auth-service.service';
 import { environment } from 'src/environments/environment';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
+import { Pedometer } from '@ionic-native/pedometer/ngx';
+
 
 @NgModule({
   declarations: [AppComponent],
@@ -26,10 +28,13 @@ import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
     AngularFireModule.initializeApp(environment.firebaseConfig),
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
     provideFirestore(() => getFirestore()),
-    IonicModule.forRoot(), 
+    IonicModule.forRoot(),
     AppRoutingModule
   ],
-  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
+  providers: [
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    Pedometer
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
