@@ -8,12 +8,8 @@
         </ion-card-header>
         <ion-card-content>
           <div class="info-item">
-            <ion-icon name="walk-outline"></ion-icon>
-            <p><strong>Total Distance:</strong> {{ totalDistance }} km</p>
-          </div>
-          <div class="info-item">
             <ion-icon name="time-outline"></ion-icon>
-            <p><strong>Total Duration:</strong> {{ totalDuration }} hours</p>
+            <p><strong>Total Duration:</strong> {{ totalDuration.toFixed(2) }} hours</p>
           </div>
           <div class="info-item">
             <ion-icon name="footsteps-outline"></ion-icon>

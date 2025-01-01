@@ -17,6 +17,8 @@ export class MainUserPage implements OnInit {
   totalDuration: number = 0;
   steps: number = 0;
   distance: number = 0;
+  startTime: number = 0;
+  sessionDuration: number = 0;
 
   constructor(
     private authService: AuthService,
@@ -51,10 +53,14 @@ export class MainUserPage implements OnInit {
       console.error('Error fetching coaches:', error);
     });
   }
+
   loadSessions(userEmail: string): void {
     this.bookingService.fetchSessions(userEmail).then(sessions => {
-      this.sessions = sessions; }).catch(error =>
-        { console.error('Error fetching sessions:', error); }); }
+      this.sessions = sessions;
+    }).catch(error => {
+      console.error('Error fetching sessions:', error);
+    });
+  }
 
   async bookSession(coachEmail: string): Promise<void> {
     if (this.user && this.user.name && this.user.email && this.user.profilePicture) {
@@ -88,10 +94,14 @@ export class MainUserPage implements OnInit {
   }
 
   startPedometer() {
+    this.startTime = Date.now();
     this.pedometer.startPedometerUpdates()
       .subscribe((data) => {
         this.steps = data.numberOfSteps;
         this.distance = this.steps * 0.0008; // Assuming average step length of 0.8 meters
+        this.sessionDuration = (Date.now() - this.startTime) / (1000 * 60 * 60); // Duration in hours
+        this.totalDuration += this.sessionDuration;
+        this.startTime = Date.now(); // Reset start time for next session
       });
   }
 }
