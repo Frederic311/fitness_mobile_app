@@ -1,9 +1,7 @@
 {
   "name": "fitness_mobile",
   "integrations": {
-    "capacitor": {
-      "enabled": false
-    },
+    "capacitor": {},
     "cordova": {}
   },
   "type": "angular"
