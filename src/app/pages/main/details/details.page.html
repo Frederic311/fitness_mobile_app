@@ -22,7 +22,7 @@
         <p><strong>Status:</strong> {{ sessionDetails.status }}</p>
         <h4>Exercises</h4>
         <ul class="exercises-list">
-          <li *ngFor="let exercise of sessionDetails.exercises">
+          <li *ngFor="let exercise of sessionDetails.exercises; let i = index" (click)="viewExercise(i)">
             <p><strong>Type:</strong> {{ exercise.exerciseType }}</p>
             <p><strong>Duration:</strong> {{ exercise.duration }} seconds</p>
             <p><strong>Repetitions:</strong> {{ exercise.repetitions }}</p>

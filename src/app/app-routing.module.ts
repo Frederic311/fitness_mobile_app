@@ -101,6 +101,12 @@ const routes: Routes = [
     loadChildren: () => import('./pages/main/details/details.module').then( m => m.DetailsPageModule)
   },
 
+  {
+    path: 'exercise',
+    loadChildren: () => import('./pages/main/exercise/exercise.module').then( m => m.ExercisePageModule)
+  },
+
+
 
 
 

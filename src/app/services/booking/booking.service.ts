@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Firestore, doc, updateDoc, collection, getDocs, query, where } from '@angular/fire/firestore';
-import { Session, Users } from '../auth/auth-service.service';
+import { Exercise, Session, Users } from '../auth/auth-service.service';
 
 @Injectable({
   providedIn: 'root',
@@ -182,6 +182,35 @@ export class BookingService {
     return sessions;
   } catch (error: any) {
     console.error('Error fetching sessions:', error.message || error);
+    throw error;
+  }
+}
+
+  // Fetch exercise by ID
+  async fetchExerciseById(exerciseId: string): Promise<Exercise> {
+    try {
+      const exerciseQuery = query(collection(this.firestore, 'exercises'), where('__name__', '==', exerciseId));
+      const querySnapshot = await getDocs(exerciseQuery);
+
+      if (querySnapshot.empty) {
+        throw new Error('Exercise not found');
+      }
+
+      const exerciseDoc = querySnapshot.docs[0];
+      return exerciseDoc.data() as Exercise;
+    } catch (error: any) {
+      console.error('Error fetching exercise by ID:', error.message || error);
+      throw error;
+    }
+  }
+
+// Update session status
+async updateSessionStatus(sessionId: string, status: string): Promise<void> {
+  try {
+    const sessionDocRef = doc(this.firestore, 'sessions', sessionId);
+    await updateDoc(sessionDocRef, { status });
+  } catch (error: any) {
+    console.error('Error updating session status:', error.message || error);
     throw error;
   }
 }

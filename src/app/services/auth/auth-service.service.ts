@@ -2,6 +2,10 @@ import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { User } from '@firebase/auth';
 import { Firestore, doc, setDoc, getDoc, DocumentSnapshot, updateDoc, collection, getDocs, query, where, addDoc, deleteDoc } from '@angular/fire/firestore';
+import { v4 as uuidv4 } from 'uuid'; // Import a UUID library to generate unique IDs
+
+// Example function where new exercises are created
+
 
 export interface Users {
   name: string;
@@ -40,6 +44,10 @@ export interface Session {
   exercises: Exercise[];
   status: string; // 'Pending', 'Accepted', 'Completed'
 }
+
+
+// Removed duplicate addNewExercise function
+
 @Injectable({
   providedIn: 'root',
 })
