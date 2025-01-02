@@ -1,0 +1,56 @@
+/* filepath: /C:/Users/FREDERIC/Desktop/New_fitness/fitness_mobile_app/src/app/pages/main/tabs/tabs.page.scss */
+
+ion-menu {
+    --background: #ffffff;
+  }
+
+  ion-toolbar {
+    --background: #6e44ff;
+    --color: #ffffff;
+  }
+
+  ion-title {
+    font-size: 1.5em;
+    font-weight: bold;
+  }
+
+  ion-content {
+    --padding-top: 16px;
+    --padding-bottom: 16px;
+    --padding-start: 16px;
+    --padding-end: 16px;
+  }
+
+  ion-list {
+    margin-top: 16px;
+  }
+
+  ion-item {
+    --background: #ffffff;
+    --color: #6e44ff;
+    --border-radius: 8px;
+    margin-bottom: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  ion-item:hover {
+    --background: #6e44ff;
+    --color: #ffffff;
+  }
+
+  ion-icon {
+    --color: #6e44ff;
+  }
+
+  ion-item:hover ion-icon {
+    --color: #ffffff;
+  }
+
+  ion-label {
+    font-size: 1.2em;
+    font-weight: bold;
+  }
+
+  ion-item:hover ion-label {
+    --color: #ffffff;
+  }

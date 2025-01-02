@@ -54,7 +54,7 @@ export class LoginPage implements OnInit {
           if (profile?.role === 'Coach') {
             this.router.navigate(['/main-coach']);
           } else {
-            this.router.navigate(['/main-user']);
+            this.router.navigate(['/tabs']);
           }
         }).catch(error => {
           console.error('Error fetching user profile:', error);

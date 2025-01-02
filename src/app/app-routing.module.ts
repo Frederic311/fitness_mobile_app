@@ -87,6 +87,14 @@ const routes: Routes = [
     path: 'coach-session',
     loadChildren: () => import('./pages/main/coach-session/coach-session.module').then( m => m.CoachSessionPageModule)
   },
+  {
+    path: 'tabs',
+    loadChildren: () => import('./pages/main/tabs/tabs.module').then( m => m.TabsPageModule)
+  },
+  {
+    path: 'to-do',
+    loadChildren: () => import('./pages/main/to-do/to-do.module').then( m => m.ToDoPageModule)
+  },
 
 
 

@@ -48,4 +48,14 @@ export class MainCoachPage implements OnInit {
       this.router.navigate(['/login']);
     });
   }
+
+  acceptReservation(index: number): void {
+    if (this.user && this.user.email) {
+      this.bookingService.updateReservationStatus(this.user.email, index, 'accepted').then(() => {
+        this.reservations[index].status = 'accepted';
+      }).catch(error => {
+        console.error('Error updating reservation status:', error);
+      });
+    }
+  }
 }

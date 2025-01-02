@@ -1,0 +1,22 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>ToDo</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <div class="reservations-list">
+    <h3>To be done</h3>
+    <ion-card *ngFor="let reservation of acceptedReservations" class="reservation-item">
+      <ion-card-header>
+        <ion-card-title>Accepted session</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <p><strong>Session date:</strong> {{ reservation.sessionDate }}</p>
+        <p><strong>Session time:</strong> {{ reservation.sessionTime }}</p>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>

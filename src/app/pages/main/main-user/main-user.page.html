@@ -1,6 +1,15 @@
-<ion-content>
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Home</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content scroll-y="true">
+  <!-- Existing Home Content -->
   <div class="user-container">
-    <!-- User Info -->
     <div *ngIf="user" class="user-info">
       <ion-card>
         <ion-card-header>
@@ -9,37 +18,33 @@
         <ion-card-content>
           <div class="info-item">
             <ion-icon name="time-outline"></ion-icon>
-            <p><strong>Total Duration:</strong> {{ totalDuration.toFixed(2) }} hours</p>
+            <p class="ok"><strong class="ok">Total Duration:</strong> {{ totalDuration.toFixed(2) }} hours</p>
           </div>
           <div class="info-item">
             <ion-icon name="footsteps-outline"></ion-icon>
-            <p><strong>Steps:</strong> {{ steps }}</p>
+            <p class="ok"><strong class="ok"> Steps:</strong> {{ steps }}</p>
           </div>
           <div class="info-item">
             <ion-icon name="map-outline"></ion-icon>
-            <p><strong>Distance Walked:</strong> {{ distance.toFixed(2) }} km</p>
+            <p class="ok"><strong class="ok">Distance Walked:</strong> {{ distance.toFixed(2) }} km</p>
           </div>
         </ion-card-content>
       </ion-card>
     </div>
-
-    <!-- List of Coaches -->
-    <div class="coaches-list">
-      <h3>Available Coaches</h3>
-      <div *ngFor="let coach of coaches" class="coach-item" [style.background-image]="'url(' + (coach.bannerImage || 'assets/images/default-banner.png') + ')'">
-        <ion-avatar class="coach-profile">
-          <img [src]="coach.profilePicture || 'assets/images/default-avatar.png'" alt="Coach Profile Picture">
-        </ion-avatar>
-        <div class="coach-info">
-          <h4>{{ coach.name }}</h4>
-          <p><strong>Price:</strong> {{ coach.sessionPrice }} FCFA</p>
-          <p>{{ coach.description }}</p>
-          <ion-button (click)="bookSession(coach.email)">Réserver une séance</ion-button>
-        </div>
+  </div>
+  <div class="coaches-list">
+    <h3>Available Coaches</h3>
+    <div *ngFor="let coach of coaches" class="coach-item" [style.background-image]="'url(' + (coach.bannerImage || 'assets/images/default-banner.png') + ')'">
+      <ion-avatar class="coach-profile">
+        <img [src]="coach.profilePicture || 'assets/images/default-avatar.png'" alt="Coach Profile Picture">
+      </ion-avatar>
+      <div class="coach-info">
+        <h4>{{ coach.name }}</h4>
+        <p><strong>Price:</strong> {{ coach.sessionPrice }} FCFA</p>
+        <p>{{ coach.description }}</p>
+        <ion-button (click)="bookSession(coach.email)">Réserver une séance</ion-button>
       </div>
     </div>
-
-    <!-- Sign Out Button -->
-    <ion-button expand="full" (click)="signOut()">Sign Out</ion-button>
   </div>
+  <ion-button expand="full" (click)="signOut()">Sign Out</ion-button>
 </ion-content>

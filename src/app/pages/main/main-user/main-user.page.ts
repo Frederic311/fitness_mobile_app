@@ -19,6 +19,8 @@ export class MainUserPage implements OnInit {
   distance: number = 0;
   startTime: number = 0;
   sessionDuration: number = 0;
+  acceptedReservations: any[] = [];
+
 
   constructor(
     private authService: AuthService,
@@ -46,6 +48,8 @@ export class MainUserPage implements OnInit {
     this.startPedometer();
   }
 
+
+
   loadCoaches(): void {
     this.authService.fetchCoaches().then(coaches => {
       this.coaches = coaches; // Assign all coaches to the coaches array
@@ -68,6 +72,7 @@ export class MainUserPage implements OnInit {
         await this.bookingService.bookSession(coachEmail, this.user.name, this.user.email, this.user.profilePicture);
         console.log(`Booking session with coach email: ${coachEmail}`);
         this.presentToast('Session booked successfully');
+        this.loadSessions(this.user.email); // Reload sessions after booking
       } catch (error) {
         console.error('Error booking session:', error);
         this.presentToast('Error booking session. Please try again.');

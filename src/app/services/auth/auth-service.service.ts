@@ -21,6 +21,9 @@ export interface Users {
   totalDistance?: number;
   totalDuration?: number;
   reservations?: any[];
+  session?: string[]; // Add sessions as an array of strings (coach IDs)
+
+
 }
 export interface Exercise {
   exerciseType: string;
@@ -29,13 +32,13 @@ export interface Exercise {
   mediaUrl: string;
 }
 export interface Session {
-  sessionId?: string; // Optional, to be added by Firestore 
+  sessionId?: string; // Optional, to be added by Firestore
   coachEmail: string
   goal: string;
   startDateTime: Date;
   sportType: string;
   exercises: Exercise[];
-  status: string; // 'Pending', 'Accepted', 'Completed' 
+  status: string; // 'Pending', 'Accepted', 'Completed'
 }
 @Injectable({
   providedIn: 'root',
@@ -193,12 +196,12 @@ export class AuthService {
       querySnapshot.forEach((doc) => {
         const data = doc.data() as Session;
         data.sessionId = doc.id; // Assign the document ID to sessionId
-        
+
         // Properly convert Firestore timestamp to JavaScript Date object
         if (data.startDateTime && (data.startDateTime as any).seconds) {
           data.startDateTime = new Date((data.startDateTime as any).seconds * 1000);
         }
-        
+
         sessions.push(data);
       });
       return sessions;
@@ -208,7 +211,7 @@ export class AuthService {
     }
   }
 
-  // Create a new session 
+  // Create a new session
   async createSession(session: Session): Promise<void> {
     try {
       const sessionsCollection = collection(this.firestore, 'sessions');
@@ -233,7 +236,7 @@ export class AuthService {
   }
 
 
-  // Delete session 
+  // Delete session
   async deleteSession(sessionId: string): Promise<void> {
     try {
       const sessionDocRef = doc(this.firestore, `sessions/${sessionId}`);

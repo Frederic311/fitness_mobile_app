@@ -23,7 +23,7 @@
     <!-- List of Reservations -->
     <div class="reservations-list">
       <h3>Reservations</h3>
-      <ion-card *ngFor="let reservation of reservations" class="reservation-item">
+      <ion-card *ngFor="let reservation of reservations; let i = index" class="reservation-item">
         <ion-card-header>
           <ion-avatar class="reservation-avatar" slot="start">
             <img [src]="reservation.userProfilePicture || 'assets/images/default-avatar.png'" alt="User Profile Picture">
@@ -34,11 +34,16 @@
           <p><strong>Email:</strong> {{ reservation.userEmail }}</p>
           <p><strong>Session Date:</strong> {{ reservation.sessionDate }}</p>
           <p><strong>Session Time:</strong> {{ reservation.sessionTime }}</p>
+          <p><strong>Status:</strong>
+            <span [ngClass]="{'accepted': reservation.status === 'accepted'}">
+              {{ reservation.status || 'Pending' }}
+            </span>
+          </p>
+          <ion-button *ngIf="reservation.status !== 'accepted'" (click)="acceptReservation(i)">Accept</ion-button>
         </ion-card-content>
       </ion-card>
     </div>
 
-    <!-- Button to Navigate to Coach Sessions -->
     <ion-button expand="full" (click)="navigateToCoachSessions()">Manage Your Sessions</ion-button>
 
     <!-- Sign Out Button -->

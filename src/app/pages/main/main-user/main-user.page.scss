@@ -1,111 +1,131 @@
+ion-content {
+  --padding-top: 16px;
+  --padding-bottom: 16px;
+  --padding-start: 16px;
+  --padding-end: 16px;
+}
+
 .user-container {
-    background: #181818;
-    color: #ffffff;
-    padding: 20px;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-  }
-  
-  h2 {
-    font-size: 22px;
-    font-weight: bold;
-    color: #ffffff;
-  }
-  
-  .coaches-list {
-    margin-top: 20px;
-  }
-  
-  .coaches-list h3 {
-    font-size: 22px;
-    font-weight: bold;
-    color: #ffffff;
-    margin-bottom: 20px;
-  }
-  
-  .coach-item {
-    display: flex;
-    align-items: center;
-    background-size: cover;
-    background-position: center;
-    border-radius: 8px;
-    padding: 10px;
-    margin-bottom: 10px;
-  }
-  
-  .coach-profile img {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    border: 3px solid #6e44ff;
-  }
-  
-  .coach-info {
-    margin-left: 15px;
-    flex: 1;
-    background: rgba(0, 0, 0, 0.6);
-    padding: 10px;
-    border-radius: 8px;
-  }
-  
-  .coach-info h4 {
-    margin: 0;
-    font-size: 18px;
-    color: #ffffff;
-  }
-  
-  .coach-info p {
-    margin: 5px 0;
-    color: #bbbbbb;
-  }
-  
-  ion-button {
-    --background: #6e44ff;
-    --border-radius: 20px;
-  }
-  
-  ion-button:hover {
-    --background: #5a34cf;
-  }
-  
-  /* User Info Styling */
-  .user-info {
-    margin-bottom: 20px;
-  }
-  
-  ion-card {
-    --background: #202020;
-    border-radius: 12px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  }
-  
-  ion-card-title {
-    font-size: 24px;
-    color: #ffffff;
-  }
-  
-  ion-card-content {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-  
-  .info-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  
-  ion-icon {
-    font-size: 24px;
-    color: #6e44ff;
-  }
-  
-  .info-item p {
-    margin: 0;
-    font-size: 16px;
-    color: #bbbbbb;
-  }
-  
+  margin-bottom: 8px;
+}
+
+.user-info {
+  margin-bottom: 8px;
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.info-item ion-icon {
+  margin-right: 8px;
+}
+
+.ok {
+  color:#6e44ff;
+}
+.coaches-list {
+  margin-bottom: 16px;
+}
+
+.coach-item {
+  display: flex;
+  align-items: center;
+  background-size: cover;
+  background-position: center;
+  padding: 16px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  color: #fff;
+}
+
+.coach-profile {
+  margin-right: 16px;
+}
+
+.coach-info {
+  flex: 1;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.coach-info h4 {
+  margin: 0;
+  font-size: 1.2em;
+}
+
+.coach-info p {
+  margin: 4px 0;
+}
+
+ion-button {
+  margin-top: 16px;
+  --background: #6e44ff;
+  --border-radius: 20px;
+}
+
+ion-button:hover {
+  --background: #5a34cf;
+}
+
+ion-card {
+  --background: #202020;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+ion-card-title {
+  font-size: 24px;
+  color: #ffffff;
+}
+
+ion-card-content {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.info-item p {
+  margin: 0;
+  font-size: 16px;
+  color: #bbbbbb;
+}
+
+.reservations-list {
+  padding: 16px;
+}
+
+.reservation-item {
+  margin-bottom: 16px;
+}
+
+.reservation-item ion-card-header {
+  background-color: #f8f8f8;
+  padding: 16px;
+}
+
+.reservation-item ion-card-title {
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+.reservation-item ion-card-content {
+  padding: 16px;
+}
+
+.reservation-item p {
+  margin: 8px 0;
+}
+
+.reservation-item .accepted {
+  color: green;
+  font-weight: bold;
+}
+
+.scrollable-content {
+  height: 100%; /* Important: Ensure the container takes up the full height */
+  overflow-y: auto; /* Enable vertical scrolling */
+}

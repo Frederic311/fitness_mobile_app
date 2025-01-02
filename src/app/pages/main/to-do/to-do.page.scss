@@ -1,0 +1,58 @@
+/* filepath: /C:/Users/FREDERIC/Desktop/New_fitness/fitness_mobile_app/src/app/pages/main/to-do/to-do.page.scss */
+
+ion-header {
+    --background: #6e44ff;
+    --color: #ffffff;
+  }
+
+  ion-title {
+    font-size: 1.5em;
+    font-weight: bold;
+  }
+
+  .reservations-list {
+    padding: 16px;
+  }
+
+  .reservations-list h3 {
+    color: #6e44ff;
+    font-size: 1.4em;
+    margin-bottom: 16px;
+  }
+
+  .reservation-item {
+    margin-bottom: 16px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  ion-card {
+    // --background: #ffffff;
+    border-radius: 8px;
+  }
+
+  ion-card-header {
+    background-color: #6e44ff;
+    color: #ffffff;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+  }
+
+  ion-card-title {
+    font-size: 1.2em;
+    font-weight: bold;
+  }
+
+  ion-card-content {
+    padding: 16px;
+  }
+
+  ion-card-content p {
+    margin: 8px 0;
+    font-size: 1em;
+    color: #ffffff;
+  }
+
+  ion-card-content p strong {
+    color: #6e44ff;
+  }
