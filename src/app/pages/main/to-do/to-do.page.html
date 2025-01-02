@@ -9,7 +9,7 @@
 <ion-content>
   <div class="reservations-list">
     <h3>To be done</h3>
-    <ion-card *ngFor="let reservation of acceptedReservations" class="reservation-item">
+    <ion-card *ngFor="let reservation of acceptedReservations" class="reservation-item" (click)="viewDetails(reservation)">
       <ion-card-header>
         <ion-card-title>Accepted session</ion-card-title>
       </ion-card-header>

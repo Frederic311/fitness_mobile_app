@@ -75,7 +75,8 @@ const routes: Routes = [
   {
     path: 'banner',
     loadChildren: () => import('./pages/info/banner/banner.module').then( m => m.BannerPageModule)
-  },  {
+  },
+  {
     path: 'main-user',
     loadChildren: () => import('./pages/main/main-user/main-user.module').then( m => m.MainUserPageModule)
   },
@@ -95,13 +96,17 @@ const routes: Routes = [
     path: 'to-do',
     loadChildren: () => import('./pages/main/to-do/to-do.module').then( m => m.ToDoPageModule)
   },
+  {
+    path: 'details/:coachId',
+    loadChildren: () => import('./pages/main/details/details.module').then( m => m.DetailsPageModule)
+  },
 
 
 
 
 
 
-  
+
 ];
 
 @NgModule({

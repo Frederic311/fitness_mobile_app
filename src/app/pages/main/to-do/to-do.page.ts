@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { BookingService } from '../../../services/booking/booking.service';
 import { AuthService } from '../../../services/auth/auth-service.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-todo',
@@ -10,7 +11,7 @@ import { AuthService } from '../../../services/auth/auth-service.service';
 export class ToDoPage implements OnInit {
   acceptedReservations: any[] = [];
 
-  constructor(private bookingService: BookingService, private authService: AuthService) {}
+  constructor(private bookingService: BookingService, private authService: AuthService, private router : Router) {}
 
   ngOnInit(): void {
     console.log('ToDoPage initialized');
@@ -34,5 +35,9 @@ export class ToDoPage implements OnInit {
     }).catch(error => {
       console.error('Error fetching accepted reservations:', error);
     });
+  }
+
+  viewDetails(reservation: any): void {
+    this.router.navigate(['/details', reservation.coachId]);
   }
 }

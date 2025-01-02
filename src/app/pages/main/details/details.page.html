@@ -1,0 +1,34 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Session Details</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div *ngIf="sessionDetails">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Session Details</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <p><strong>Session Date:</strong> {{ sessionDetails.startDateTime | date: 'shortDate' }}</p>
+        <p><strong>Session Time:</strong> {{ sessionDetails.startDateTime | date: 'shortTime' }}</p>
+        <p><strong>Coach Email:</strong> {{ sessionDetails.coachEmail }}</p>
+        <p><strong>Goal:</strong> {{ sessionDetails.goal }}</p>
+        <p><strong>Sport Type:</strong> {{ sessionDetails.sportType }}</p>
+        <p><strong>Status:</strong> {{ sessionDetails.status }}</p>
+        <h4>Exercises</h4>
+        <ul class="exercises-list">
+          <li *ngFor="let exercise of sessionDetails.exercises">
+            <p><strong>Type:</strong> {{ exercise.exerciseType }}</p>
+            <p><strong>Duration:</strong> {{ exercise.duration }} seconds</p>
+            <p><strong>Repetitions:</strong> {{ exercise.repetitions }}</p>
+          </li>
+        </ul>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Firestore, doc, updateDoc, collection, getDocs, query, where } from '@angular/fire/firestore';
-import { Users } from '../auth/auth-service.service';
+import { Session, Users } from '../auth/auth-service.service';
 
 @Injectable({
   providedIn: 'root',
@@ -142,4 +142,47 @@ export class BookingService {
       throw error;
     }
   }
+
+  // Fetch coach by ID
+  async fetchCoachById(coachId: string): Promise<Users> {
+    try {
+      const coachQuery = query(collection(this.firestore, 'users'), where('__name__', '==', coachId));
+      const querySnapshot = await getDocs(coachQuery);
+
+      if (querySnapshot.empty) {
+        throw new Error('Coach profile not found');
+      }
+
+      const coachDoc = querySnapshot.docs[0];
+      return coachDoc.data() as Users;
+    } catch (error: any) {
+      console.error('Error fetching coach by ID:', error.message || error);
+      throw error;
+    }
+  }
+
+ // Fetch sessions by coach email
+ async fetchSessionsByCoachEmail(coachEmail: string): Promise<Session[]> {
+  try {
+    const sessionsQuery = query(collection(this.firestore, 'sessions'), where('coachEmail', '==', coachEmail));
+    const querySnapshot = await getDocs(sessionsQuery);
+
+    const sessions: Session[] = [];
+    querySnapshot.forEach((doc) => {
+      const data = doc.data() as Session;
+      data.sessionId = doc.id; // Assign the document ID to sessionId
+
+      // Properly convert Firestore timestamp to JavaScript Date object
+      if (data.startDateTime && (data.startDateTime as any).seconds) {
+        data.startDateTime = new Date((data.startDateTime as any).seconds * 1000);
+      }
+
+      sessions.push(data);
+    });
+    return sessions;
+  } catch (error: any) {
+    console.error('Error fetching sessions:', error.message || error);
+    throw error;
+  }
+}
 }
