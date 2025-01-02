@@ -8,9 +8,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:658910103093:android:1de7145b57182d7441537c",
+        "mobilesdk_app_id": "1:658910103093:android:955be870820e973041537c",
         "android_client_info": {
-          "package_name": "io.ionic.starter"
+          "package_name": "io.ionic.starterr"
         }
       },
       "oauth_client": [],
