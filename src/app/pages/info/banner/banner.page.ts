@@ -41,21 +41,19 @@ export class BannerPage {
             description: this.description,
             sessionPrice: this.sessionPrice
           });
-          console.log('Banner details saved:', {
-            bannerImage: this.bannerImage,
-            description: this.description,
-            sessionPrice: this.sessionPrice,
-          });
-          this.router.navigate(['/main-coach']); // Navigate to the home page
+          this.router.navigate(['/main-coach']);
         } else {
           this.errorMessage = 'User not found. Please log in again.';
         }
       } catch (error) {
-        this.errorMessage = 'Error saving banner details: ' + ((error as Error).message || error);
-        console.error('Error saving banner details:', error);
+        this.errorMessage = 'Error saving banner details: ' + ((error as any).message || error);
       }
     } else {
       this.errorMessage = 'Complete all fields before continuing.';
     }
+  }
+
+  goBack(): void {
+    this.router.navigate(['/level']);
   }
 }

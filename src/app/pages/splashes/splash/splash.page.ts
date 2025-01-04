@@ -11,9 +11,9 @@ export class SplashPage implements OnInit {
 
   ngOnInit() {
     // Automatically navigate to workout page after 5 seconds
-    setTimeout(() => {
-      this.navigateToWorkout();
-    }, 5000);
+    // setTimeout(() => {
+    //   this.navigateToWorkout();
+    // }, 5000);
   }
 
   navigateToWorkout() {
