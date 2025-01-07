@@ -32,7 +32,7 @@ export class BannerPage {
   }
 
   async submitBannerDetails(): Promise<void> {
-    if (this.bannerImage && this.description && this.sessionPrice) {
+    if (this.bannerImage && this.description && this.sessionPrice !== null) {
       try {
         const user = await this.authService.getProfile();
         if (user && user.uid) {
