@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "658910103093",
+    "firebase_url": "https://fitness01-237aa-default-rtdb.firebaseio.com",
+    "project_id": "fitness01-237aa",
+    "storage_bucket": "fitness01-237aa.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:658910103093:android:5525a19be1a8b37841537c",
+        "android_client_info": {
+          "package_name": "io.ionic.starter"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD6xu8dyGIEBqaDYnW-JbbDgVWncS4cw6o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
