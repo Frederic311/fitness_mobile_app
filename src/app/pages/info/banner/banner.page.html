@@ -14,6 +14,11 @@
       hidden 
     />
 
+    <!-- Error message display -->
+    <div *ngIf="errorMessage" class="error-message">
+      {{ errorMessage }}
+    </div>
+
     <!-- Description Input -->
     <ion-item>
       <ion-label position="floating">Description</ion-label>
@@ -31,12 +36,7 @@
       ></ion-input>
     </ion-item>
 
-    <!-- Error Message Display -->
-    <div *ngIf="errorMessage" class="error-message">
-      {{ errorMessage }}
-    </div>
-
     <!-- Submit Button -->
-    <ion-button expand="full" (click)="submitBannerDetails()">Submit</ion-button>
+    <ion-button expand="full" (click)="submitBannerDetails()" [disabled]="isLoading">Submit</ion-button>
   </div>
 </ion-content>

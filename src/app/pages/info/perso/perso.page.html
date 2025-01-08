@@ -1,7 +1,5 @@
 <ion-content>
   <div class="profile-container">
-    <!-- Avatar with default image and upload feature -->
-
     <!-- Hidden file input -->
     <input 
       type="file" 
@@ -25,23 +23,24 @@
     </div>
 
     <!-- Profile form -->
-    <form (ngSubmit)="submitForm()">
+    <form [formGroup]="profileForm" (ngSubmit)="submitForm()">
       <ion-item>
         <ion-label position="floating">Full Name</ion-label>
         <ion-input 
           type="text" 
-          [(ngModel)]="profile.fullName" 
-          name="fullName" 
+          formControlName="fullName"
           required
         ></ion-input>
+        <div *ngIf="profileForm.get('fullName')?.invalid && profileForm.get('fullName')?.touched" class="error-message">
+          Full name is required
+        </div>
       </ion-item>
 
       <ion-item>
         <ion-label position="floating">Nickname</ion-label>
         <ion-input 
           type="text" 
-          [(ngModel)]="profile.nickname" 
-          name="nickname"
+          formControlName="nickname"
         ></ion-input>
       </ion-item>
 
@@ -49,18 +48,19 @@
         <ion-label position="floating">Email</ion-label>
         <ion-input 
           type="email" 
-          [(ngModel)]="profile.email" 
-          name="email" 
+          formControlName="email"
           required
         ></ion-input>
+        <div *ngIf="profileForm.get('email')?.invalid && profileForm.get('email')?.touched" class="error-message">
+          Valid email is required
+        </div>
       </ion-item>
 
       <ion-item>
         <ion-label position="floating">Password</ion-label>
         <ion-input 
           [type]="showPassword ? 'text' : 'password'" 
-          [(ngModel)]="profile.password" 
-          name="password" 
+          formControlName="password"
           required
         ></ion-input>
         <ion-icon 
@@ -68,22 +68,28 @@
           slot="end" 
           (click)="togglePasswordVisibility()"
         ></ion-icon>
+        <div *ngIf="profileForm.get('password')?.invalid && profileForm.get('password')?.touched" class="error-message">
+          Password is required and must be at least 6 characters long
+        </div>
       </ion-item>
 
       <ion-item>
         <ion-label position="floating">Phone Number</ion-label>
         <ion-input 
           type="tel" 
-          [(ngModel)]="profile.phoneNumber" 
-          name="phoneNumber" 
+          formControlName="phoneNumber"
           required
         ></ion-input>
+        <div *ngIf="profileForm.get('phoneNumber')?.invalid && profileForm.get('phoneNumber')?.touched" class="error-message">
+          Valid phone number is required
+        </div>
       </ion-item>
 
       <ion-button 
         expand="full" 
         class="submit-button" 
         type="submit"
+        [disabled]="profileForm.invalid || isLoading"
       >Submit</ion-button>
     </form>
   </div>
