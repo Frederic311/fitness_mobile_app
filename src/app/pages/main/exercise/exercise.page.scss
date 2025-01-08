@@ -64,3 +64,34 @@ ion-header {
     color: #6e44ff;
     margin-top: 16px;
   }
+  .timer-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  
+  canvas {
+    border: 1px solid #ccc;
+    border-radius: 50%;
+    animation: pulsate 1s ease-in-out infinite;
+  }
+  
+  @keyframes pulsate {
+    0%, 100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.1);
+    }
+  }
+  
+  .completion-prompt {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  

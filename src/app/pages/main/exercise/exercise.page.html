@@ -15,17 +15,32 @@
       </ion-card-header>
       <ion-card-content>
         <p><strong>Type:</strong> {{ exerciseDetails.exerciseType }}</p>
-        <p><strong>Duration:</strong> {{ exerciseDetails.duration }} seconds</p>
+       <p><strong>Duration:</strong> {{ exerciseDetails.duration }} seconds</p>
         <p><strong>Repetitions:</strong> {{ exerciseDetails.repetitions }}</p>
         <div *ngIf="exerciseDetails.mediaUrl">
-          <video controls [src]="exerciseDetails.mediaUrl" class="exercise-video"></video>
+          <ng-container *ngIf="isYouTubeUrl(exerciseDetails.mediaUrl); else video">
+            <iframe #youtubePlayer [src]="sanitizedMediaUrl" frameborder="0" allowfullscreen></iframe>
+          </ng-container>
+          <ng-template #video>
+            <video #videoPlayer controls [src]="exerciseDetails.mediaUrl" class="exercise-video"></video>
+          </ng-template>
         </div>
-        <ion-button class="start" expand="full" (click)="startTimer()">Start</ion-button>
+        <ion-button class="start" expand="full" (click)="startTimer()" [disabled]="timerRunning">Start</ion-button>
       </ion-card-content>
     </ion-card>
   </div>
 
-  <div *ngIf="timerRunning">
+  <div *ngIf="timerRunning" class="timer-container">
+    <canvas #timerCanvas width="200" height="200"></canvas>
     <h2>{{ remainingTime }} seconds remaining</h2>
   </div>
+
+  <div *ngIf="showCompletionPrompt" class="completion-prompt">
+    <h3>Exercise finished!</h3>
+    <ion-button *ngIf="currentExerciseIndex < sessionDetails.exercises.length" expand="full" (click)="startNextExercise()">Next exercise</ion-button>
+    <ion-button *ngIf="currentExerciseIndex < sessionDetails.exercises.length" expand="full" color="secondary" (click)="finishLater()">Later</ion-button>
+    <ion-button *ngIf="currentExerciseIndex >= sessionDetails.exercises.length" expand="full" color="primary" (click)="returnToHome()">Return to Home</ion-button>
+  </div>
+
+  <ion-button expand="full" (click)="stopMedia()">Stop Media</ion-button>
 </ion-content>
