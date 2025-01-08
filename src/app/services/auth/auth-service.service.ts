@@ -13,7 +13,7 @@ export interface Users {
   nickname?: string;
   phoneNumber?: string;
   profilePicture?: string;
-  bannerImage?: string;
+  bannerImage?: string | null;
   role?: string;
   age?: number;
   height?: number;

@@ -1,15 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AuthService, Session, Users } from '../../../services/auth/auth-service.service';
 import { BookingService } from '../../../services/booking/booking.service';
 import { Router } from '@angular/router';
-import { Pedometer } from '@ionic-native/pedometer/ngx';
+import { Pedometer, IPedometerData } from '@ionic-native/pedometer/ngx';
+import { Platform } from '@ionic/angular';
+import { Diagnostic } from '@ionic-native/diagnostic/ngx';
+import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
+
 
 @Component({
   selector: 'app-main-user',
   templateUrl: './main-user.page.html',
   styleUrls: ['./main-user.page.scss'],
 })
-export class MainUserPage implements OnInit {
+export class MainUserPage implements OnInit, OnDestroy {
   user: Users | null = null;
   sessions: Session[] = [];
   coaches: Users[] = [];
@@ -21,12 +25,15 @@ export class MainUserPage implements OnInit {
   sessionDuration: number = 0;
   acceptedReservations: any[] = [];
 
-
   constructor(
     private authService: AuthService,
     private bookingService: BookingService,
     private router: Router,
-    private pedometer: Pedometer
+    private pedometer: Pedometer,
+    private platform: Platform,
+    private diagnostic: Diagnostic,
+    private androidPermissions: AndroidPermissions,
+
   ) {}
 
   ngOnInit(): void {
@@ -45,10 +52,10 @@ export class MainUserPage implements OnInit {
       console.error('Error getting user profile:', error);
     });
 
-    this.startPedometer();
+    this.platform.ready().then(() => {
+      this.requestPedometerPermission();
+    });
   }
-
-
 
   loadCoaches(): void {
     this.authService.fetchCoaches().then(coaches => {
@@ -98,15 +105,39 @@ export class MainUserPage implements OnInit {
     });
   }
 
+  requestPedometerPermission() {
+    if (this.platform.is('android')) {
+
+      this.diagnostic.requestRuntimePermission(this.diagnostic.permission.BODY_SENSORS)
+        .then((status) => {
+          if (status === this.diagnostic.permissionStatus.GRANTED) {
+            this.startPedometer();
+          } else {
+            console.error('Permission for BODY_SENSORS not granted');
+          }
+        }).catch((error) => {
+          console.error('Error requesting BODY_SENSORS permission:', error);
+        });
+    } else {
+      this.startPedometer();
+    }
+  }
+
   startPedometer() {
     this.startTime = Date.now();
     this.pedometer.startPedometerUpdates()
-      .subscribe((data) => {
+      .subscribe((data: IPedometerData) => {
         this.steps = data.numberOfSteps;
-        this.distance = this.steps * 0.0008; // Assuming average step length of 0.8 meters
         this.sessionDuration = (Date.now() - this.startTime) / (1000 * 60 * 60); // Duration in hours
         this.totalDuration += this.sessionDuration;
         this.startTime = Date.now(); // Reset start time for next session
+      }, (error) => {
+        console.error('Error with pedometer updates:', error);
       });
+  }
+
+
+  ngOnDestroy() {
+    this.pedometer.stopPedometerUpdates();
   }
 }

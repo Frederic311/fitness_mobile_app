@@ -32,12 +32,12 @@ export class BannerPage {
   }
 
   async submitBannerDetails(): Promise<void> {
-    if (this.bannerImage && this.description && this.sessionPrice) {
+    if (this.description && this.sessionPrice !== null) {
       try {
         const user = await this.authService.getProfile();
         if (user && user.uid) {
           await this.authService.updateUserDetails(user.uid, {
-            bannerImage: this.bannerImage,
+            bannerImage: this.bannerImage, // This will be null if not provided
             description: this.description,
             sessionPrice: this.sessionPrice
           });
@@ -49,7 +49,7 @@ export class BannerPage {
         this.errorMessage = 'Error saving banner details: ' + ((error as any).message || error);
       }
     } else {
-      this.errorMessage = 'Complete all fields before continuing.';
+      this.errorMessage = 'Complete all required fields before continuing.';
     }
   }
 
