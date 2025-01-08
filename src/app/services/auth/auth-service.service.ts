@@ -34,6 +34,7 @@ export interface Exercise {
   duration: number; // in seconds
   repetitions: number;
   mediaUrl: string;
+  completed: boolean;
 }
 export interface Session {
   sessionId?: string; // Optional, to be added by Firestore

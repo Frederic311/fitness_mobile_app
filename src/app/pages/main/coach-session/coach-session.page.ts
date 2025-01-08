@@ -78,7 +78,8 @@ export class CoachSessionPage implements OnInit {
       exerciseType: '',
       duration: 0,
       repetitions: 0,
-      mediaUrl: ''
+      mediaUrl: '',
+      completed: false
     });
   }
 

@@ -15,7 +15,7 @@ export class ExercisePage implements OnInit {
   @ViewChild('videoPlayer') videoPlayer: ElementRef;
   @ViewChild('timerCanvas') timerCanvas: ElementRef;
 
-  exerciseDetails: Exercise = { exerciseType: '', duration: 0, repetitions: 0, mediaUrl: '' };
+  exerciseDetails: Exercise = { exerciseType: '', duration: 0, repetitions: 0, mediaUrl: '' ,completed:false};
   sessionDetails: Session = { sessionId: '', coachEmail: '', goal: '', startDateTime: new Date(), sportType: '', exercises: [], status: '' };
   remainingTime: number = 0;
   timerRunning: boolean = false;
