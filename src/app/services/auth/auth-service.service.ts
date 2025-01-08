@@ -34,6 +34,8 @@ export interface Exercise {
   duration: number; // in seconds
   repetitions: number;
   mediaUrl: string;
+ completed?: boolean; // Optional, to keep track of completion status
+
 }
 export interface Session {
   sessionId?: string; // Optional, to be added by Firestore
@@ -199,17 +201,17 @@ export class AuthService {
     try {
       const sessionsQuery = query(collection(this.firestore, 'sessions'), where('coachEmail', '==', coachEmail));
       const querySnapshot = await getDocs(sessionsQuery);
-  
+
       const sessions: Session[] = [];
       querySnapshot.forEach((doc) => {
         const data = doc.data() as Session;
         data.sessionId = doc.id; // Assign the document ID to sessionId
-  
+
         // Properly convert Firestore timestamp to JavaScript Date object
         if (data.startDateTime && (data.startDateTime as any).seconds) {
           data.startDateTime = new Date((data.startDateTime as any).seconds * 1000);
         }
-  
+
         sessions.push(data);
       });
       return sessions;
@@ -218,7 +220,7 @@ export class AuthService {
       throw error;
     }
   }
-  
+
   // Create a new session
   async createSession(session: Session): Promise<void> {
     try {
@@ -229,7 +231,7 @@ export class AuthService {
       throw error;
     }
   }
-  
+
   // Update session
   async updateSession(sessionId: string, session: Partial<Session>): Promise<void> {
     try {
@@ -240,7 +242,7 @@ export class AuthService {
       throw error;
     }
   }
-  
+
   // Delete session
   async deleteSession(sessionId: string): Promise<void> {
     try {
@@ -251,6 +253,6 @@ export class AuthService {
       throw error;
     }
   }
-}  
+}
 
 

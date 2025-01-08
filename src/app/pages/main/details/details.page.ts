@@ -42,10 +42,22 @@ export class DetailsPage implements OnInit {
     console.log('viewExercise called with index:', index);
     if (this.sessionDetails && this.sessionDetails.exercises[index]) {
       const exercise = this.sessionDetails.exercises[index];
+      const sessionId = this.sessionDetails.sessionId; // Assuming sessionDetails has an 'id' property
       console.log('Navigating to exercise with details:', exercise);
-      this.router.navigate(['/exercise'], { state: { exercise } });
+      console.log('Session ID:', sessionId);
+      this.router.navigate(['/exercise'], { state: { exercise, sessionDetails: this.sessionDetails, index } });
     } else {
       console.error('Invalid exercise index');
+    }
+  }
+
+  getStatusColor() {
+    if (this.sessionDetails.status === 'Completed') {
+      return 'green';
+    } else if (this.sessionDetails.status === 'In Progress') {
+      return 'blue';
+    } else {
+      return '';
     }
   }
 }

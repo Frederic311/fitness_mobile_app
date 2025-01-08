@@ -19,7 +19,9 @@
         <p><strong>Coach Email:</strong> {{ sessionDetails.coachEmail }}</p>
         <p><strong>Goal:</strong> {{ sessionDetails.goal }}</p>
         <p><strong>Sport Type:</strong> {{ sessionDetails.sportType }}</p>
-        <p><strong>Status:</strong> {{ sessionDetails.status }}</p>
+        <p><strong>Status:</strong><span [ngStyle]="{'color': getStatusColor()}">
+          {{ sessionDetails.status }}
+        </span></p>
         <h4>Exercises</h4>
         <ul class="exercises-list">
           <li *ngFor="let exercise of sessionDetails.exercises; let i = index" (click)="viewExercise(i)">

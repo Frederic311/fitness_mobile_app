@@ -24,10 +24,12 @@ export class ExercisePage implements OnInit {
     const navigation = this.router.getCurrentNavigation();
     if (navigation?.extras.state) {
       this.exerciseDetails = navigation.extras.state['exercise'];
-      this.sessionDetails = navigation.extras.state['session'];
+      this.sessionDetails = navigation.extras.state['sessionDetails'];
       this.currentExerciseIndex = navigation.extras.state['index'];
       this.remainingTime = this.exerciseDetails.duration; // Set the remaining time based on the exercise duration
       console.log('exerciseDetails:', this.exerciseDetails);
+      console.log('sessionDetails:', this.sessionDetails);
+      console.log('Session ID:', this.sessionDetails?.sessionId); // Add console log for session ID
     } else {
       throw new Error('No exercise details found in navigation state');
     }
@@ -44,6 +46,7 @@ export class ExercisePage implements OnInit {
         if (this.currentRepetition < this.exerciseDetails.repetitions) {
           this.showBreakDialog();
         } else {
+          this.markExerciseAsCompleted();
           this.showCompletionDialog();
         }
       }
@@ -101,19 +104,43 @@ export class ExercisePage implements OnInit {
     await alert.present();
   }
 
+  markExerciseAsCompleted() {
+    this.exerciseDetails.completed = true;
+    console.log('Exercise marked as completed:', this.exerciseDetails);
+  }
+
   async startNextExercise() {
-    this.currentExerciseIndex++;
-    if (this.currentExerciseIndex < this.sessionDetails.exercises.length) {
-      const nextExercise = this.sessionDetails.exercises[this.currentExerciseIndex];
-      this.router.navigate(['/exercise'], { state: { exercise: nextExercise, session: this.sessionDetails, index: this.currentExerciseIndex } });
+    if (this.sessionDetails && this.sessionDetails.exercises) {
+      console.log('Starting next exercise. Current index:', this.currentExerciseIndex);
+      const notCompletedExercises = this.sessionDetails.exercises.filter(ex => !ex.completed); // Filter incomplete exercises
+
+      if (notCompletedExercises.length > 0) {
+        this.currentExerciseIndex++;
+        if (this.currentExerciseIndex < notCompletedExercises.length) {
+          const nextExercise = notCompletedExercises[this.currentExerciseIndex];
+          console.log('Navigating to next exercise with details:', nextExercise);
+          this.router.navigate(['/exercise'], { state: { exercise: nextExercise, sessionDetails: this.sessionDetails, index: this.currentExerciseIndex } });
+        } else {
+          await this.markSessionAsCompleted();
+          const alert = document.createElement('ion-alert');
+          alert.header = 'Session completed';
+          alert.message = 'All exercises are completed. The session is marked as completed.';
+          alert.buttons = ['OK'];
+          document.body.appendChild(alert);
+          await alert.present();
+        }
+      } else {
+        console.log('All exercises are already completed.');
+        await this.markSessionAsCompleted();
+        const alert = document.createElement('ion-alert');
+        alert.header = 'Session completed';
+        alert.message = 'All exercises are completed. The session is marked as completed.';
+        alert.buttons = ['OK'];
+        document.body.appendChild(alert);
+        await alert.present();
+      }
     } else {
-      await this.markSessionAsCompleted();
-      const alert = document.createElement('ion-alert');
-      alert.header = 'Session completed';
-      alert.message = 'All exercises are completed. The session is marked as completed.';
-      alert.buttons = ['OK'];
-      document.body.appendChild(alert);
-      await alert.present();
+      console.error('sessionDetails or exercises property is undefined.');
     }
   }
 
@@ -122,6 +149,7 @@ export class ExercisePage implements OnInit {
       this.sessionDetails.status = 'completed';
       if (this.sessionDetails.sessionId) {
         await this.bookingService.updateSessionStatus(this.sessionDetails.sessionId, 'completed');
+        console.log('Session marked as completed. Session ID:', this.sessionDetails.sessionId);
       } else {
         console.error('Session ID is undefined');
       }
