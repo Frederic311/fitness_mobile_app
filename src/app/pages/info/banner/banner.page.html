@@ -1,6 +1,6 @@
 <ion-content>
   <div class="banner-container">
-    <h1>Choose your Banner, add a description and price</h1>
+    <h1>Choose your Banner, add a description, and price</h1>
     
     <!-- Banner Image Upload -->
     <ion-avatar class="avatar" (click)="triggerFileInput()">
@@ -13,6 +13,11 @@
       (change)="onBannerSelected($event)" 
       hidden 
     />
+
+    <!-- Error message display -->
+    <div *ngIf="errorMessage" class="error-message">
+      {{ errorMessage }}
+    </div>
 
     <!-- Description Input -->
     <ion-item>
@@ -31,12 +36,7 @@
       ></ion-input>
     </ion-item>
 
-    <!-- Error Message Display -->
-    <div *ngIf="errorMessage" class="error-message">
-      {{ errorMessage }}
-    </div>
-
     <!-- Submit Button -->
-    <ion-button expand="full" (click)="submitBannerDetails()">Submit</ion-button>
+    <ion-button expand="full" (click)="submitBannerDetails()" [disabled]="isLoading">Submit</ion-button>
   </div>
 </ion-content>

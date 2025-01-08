@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../../services/auth/auth-service.service';
 
 @Component({
@@ -8,24 +9,32 @@ import { AuthService } from '../../../services/auth/auth-service.service';
   styleUrls: ['./perso.page.scss'],
 })
 export class PersoPage {
-  profile = {
-    fullName: '',
-    nickname: '',
-    email: '',
-    password: '',
-    phoneNumber: '',
-  };
-
+  profileForm: FormGroup;
   profilePicture: string | null = null;
   showPassword = false;
   isLoading = false;
   errorMessage: string | null = null;
 
-  constructor(private router: Router, private authService: AuthService) {}
+  constructor(private router: Router, private authService: AuthService, private fb: FormBuilder) {
+    this.profileForm = this.fb.group({
+      fullName: ['', Validators.required],
+      nickname: [''],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(6)]],
+      phoneNumber: ['', [Validators.required, Validators.pattern('^[0-9]*$')]],
+    });
+  }
 
   onPhotoSelected(event: any): void {
     const file = event.target.files[0];
     if (file) {
+      // Validate file size (e.g., 2MB)
+      const maxSize = 2 * 1024 * 1024;
+      if (file.size > maxSize) {
+        this.errorMessage = 'The file size exceeds the 2MB limit. Please choose a smaller file.';
+        return;
+      }
+
       const reader = new FileReader();
       reader.onload = () => {
         this.profilePicture = reader.result as string;
@@ -44,8 +53,8 @@ export class PersoPage {
   }
 
   async submitForm(): Promise<void> {
-    if (!this.profile.email || !this.profile.password || !this.profile.fullName) {
-      this.errorMessage = 'Complete all required fields';
+    if (!this.profileForm.valid) {
+      this.errorMessage = 'Complete all required fields with valid data';
       return;
     }
 
@@ -53,23 +62,23 @@ export class PersoPage {
     this.errorMessage = null;
 
     try {
-      const user = await this.authService.registerUser(this.profile.email, this.profile.password, this.profile.fullName);
+      const formValue = this.profileForm.value;
+      const user = await this.authService.registerUser(formValue.email, formValue.password, formValue.fullName);
       console.log('User created:', user);
 
       if (user && user.uid) {
         const profileData = {
-          name: this.profile.fullName,
-          email: this.profile.email,
-          nickname: this.profile.nickname,
-          phoneNumber: this.profile.phoneNumber,
+          name: formValue.fullName,
+          email: formValue.email,
+          nickname: formValue.nickname,
+          phoneNumber: formValue.phoneNumber,
           profilePicture: this.profilePicture || undefined
         };
 
         await this.authService.saveUserProfile(user.uid, profileData);
         console.log('User profile saved:', profileData);
+        this.router.navigate(['/role']);
       }
-
-      this.router.navigate(['/role']);
     } catch (error) {
       if ((error as any).code === 'auth/email-already-in-use') {
         this.errorMessage = 'The email address is already in use by another account.';

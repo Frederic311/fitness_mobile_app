@@ -25,7 +25,12 @@
             <p><strong>Duration:</strong> {{ exercise.duration / 60 }} min {{ exercise.duration % 60 }} sec</p>
             <p><strong>Repetitions:</strong> {{ exercise.repetitions }}</p>
             <div *ngIf="exercise.mediaUrl">
-              <video [src]="exercise.mediaUrl" controls></video>
+              <ng-container *ngIf="isYouTubeUrl(exercise.mediaUrl); else video">
+                <iframe [src]="sanitizeUrl(exercise.mediaUrl)" frameborder="0" allowfullscreen></iframe>
+              </ng-container>
+              <ng-template #video>
+                <video [src]="exercise.mediaUrl" controls></video>
+              </ng-template>
             </div>
           </div>
           <button (click)="editSession(session)">Edit</button>
@@ -62,7 +67,7 @@
           <label for="repetitions{{i}}">Repetitions</label>
           <input type="number" id="repetitions{{i}}" [(ngModel)]="exercise.repetitions">
           <label for="mediaUrl{{i}}">Media URL</label>
-          <input type="file" id="mediaUrl{{i}}" (change)="handleMediaFile($event, i)">
+          <input type="url" id="mediaUrl{{i}}" [(ngModel)]="exercise.mediaUrl">
           <button class="danger" (click)="removeExercise(i)">Remove</button>
         </div>
         <button (click)="addExercise()">Add Exercise</button>

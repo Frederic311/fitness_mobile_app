@@ -12,17 +12,31 @@ export class BannerPage {
   description: string = '';
   sessionPrice: number | null = null;
   errorMessage: string | null = null;
+  isLoading = false;
 
   constructor(private router: Router, private authService: AuthService) {}
 
   onBannerSelected(event: any): void {
     const file = event.target.files[0];
     if (file) {
+      // Validate file size (e.g., 2MB)
+      const maxSize = 2 * 1024 * 1024;
+      if (file.size > maxSize) {
+        this.errorMessage = 'The file size exceeds the 2MB limit. Please choose a smaller file.';
+        return;
+      }
+
       const reader = new FileReader();
       reader.onload = () => {
         this.bannerImage = reader.result as string;
+        this.errorMessage = null; // Clear any previous error message
+      };
+      reader.onerror = () => {
+        this.errorMessage = 'Error reading the file. Please try again.';
       };
       reader.readAsDataURL(file);
+    } else {
+      this.errorMessage = 'No file selected. Please choose a file.';
     }
   }
 
