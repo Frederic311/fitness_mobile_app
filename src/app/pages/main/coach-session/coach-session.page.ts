@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { AuthService, Users, Session, Exercise } from '../../../services/auth/auth-service.service';
 import { Router } from '@angular/router';
 
@@ -20,7 +21,7 @@ export class CoachSessionPage implements OnInit {
   editingSessionId: string | null = null;
   showCreateSessionForm = false;
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private authService: AuthService, private router: Router, private sanitizer: DomSanitizer) {}
 
   ngOnInit(): void {
     this.authService.getProfile().then(user => {
@@ -84,6 +85,20 @@ export class CoachSessionPage implements OnInit {
   removeExercise(index: number): void {
     this.newExercises.splice(index, 1);
   }
+
+  isYouTubeUrl(url: string): boolean {
+    return url.includes('youtube.com') || url.includes('youtu.be');
+  }
+
+  sanitizeUrl(url: string): SafeResourceUrl {
+    // Convertir les URL courtes de YouTube en URL intégrables
+    if (this.isYouTubeUrl(url)) {
+      url = url.replace('watch?v=', 'embed/');
+      url = url.replace('youtu.be/', 'www.youtube.com/embed/');
+    }
+    return this.sanitizer.bypassSecurityTrustResourceUrl(url);
+  }
+  
 
   handleMediaFile(event: any, index: number): void {
     const file = event.target.files[0];

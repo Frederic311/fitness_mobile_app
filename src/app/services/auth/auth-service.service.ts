@@ -195,21 +195,21 @@ export class AuthService {
     }
   }
 
-   async fetchSessions(coachEmail: string): Promise<Session[]> {
+  async fetchSessions(coachEmail: string): Promise<Session[]> {
     try {
       const sessionsQuery = query(collection(this.firestore, 'sessions'), where('coachEmail', '==', coachEmail));
       const querySnapshot = await getDocs(sessionsQuery);
-
+  
       const sessions: Session[] = [];
       querySnapshot.forEach((doc) => {
         const data = doc.data() as Session;
         data.sessionId = doc.id; // Assign the document ID to sessionId
-
+  
         // Properly convert Firestore timestamp to JavaScript Date object
         if (data.startDateTime && (data.startDateTime as any).seconds) {
           data.startDateTime = new Date((data.startDateTime as any).seconds * 1000);
         }
-
+  
         sessions.push(data);
       });
       return sessions;
@@ -218,41 +218,39 @@ export class AuthService {
       throw error;
     }
   }
-
+  
   // Create a new session
   async createSession(session: Session): Promise<void> {
     try {
       const sessionsCollection = collection(this.firestore, 'sessions');
       await addDoc(sessionsCollection, session);
-    }
-    catch (error: any) {
+    } catch (error: any) {
       console.error('Error creating session:', error.message || error);
       throw error;
     }
   }
-
+  
   // Update session
   async updateSession(sessionId: string, session: Partial<Session>): Promise<void> {
     try {
       const sessionDocRef = doc(this.firestore, `sessions/${sessionId}`);
       await updateDoc(sessionDocRef, session);
-    }
-    catch (error: any) {
+    } catch (error: any) {
       console.error('Error updating session:', error.message || error);
       throw error;
     }
   }
-
-
+  
   // Delete session
   async deleteSession(sessionId: string): Promise<void> {
     try {
       const sessionDocRef = doc(this.firestore, `sessions/${sessionId}`);
       await deleteDoc(sessionDocRef);
+    } catch (error: any) {
+      console.error('Error deleting session:', error.message || error);
+      throw error;
     }
-    catch (error: any) { console.error('Error deleting session:', error.message || error); throw error; }
   }
-}
-
+}  
 
 
