@@ -6,6 +6,7 @@ import { Pedometer, IPedometerData } from '@ionic-native/pedometer/ngx';
 import { Platform } from '@ionic/angular';
 import { Diagnostic } from '@ionic-native/diagnostic/ngx';
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
+import { ChangeDetectorRef } from '@angular/core';
 
 
 @Component({
@@ -33,6 +34,7 @@ export class MainUserPage implements OnInit, OnDestroy {
     private platform: Platform,
     private diagnostic: Diagnostic,
     private androidPermissions: AndroidPermissions,
+    private cd: ChangeDetectorRef // Add this line
 
   ) {}
 
@@ -125,16 +127,24 @@ export class MainUserPage implements OnInit, OnDestroy {
 
   startPedometer() {
     this.startTime = Date.now();
+    const stepLengthInMeters = 0.762; // Average step length in meters, adjust as needed
+
     this.pedometer.startPedometerUpdates()
       .subscribe((data: IPedometerData) => {
         this.steps = data.numberOfSteps;
+        this.distance = this.steps * stepLengthInMeters / 1000; // Distance in kilometers
         this.sessionDuration = (Date.now() - this.startTime) / (1000 * 60 * 60); // Duration in hours
         this.totalDuration += this.sessionDuration;
         this.startTime = Date.now(); // Reset start time for next session
+
+        // Trigger change detection
+        this.cd.detectChanges();
       }, (error) => {
         console.error('Error with pedometer updates:', error);
       });
   }
+
+
 
 
   ngOnDestroy() {
