@@ -1,63 +1,89 @@
-
-.input{
+.input {
     font-weight: 300;
     color: black;
-}
-ion-item {
+    font-family: var(--font-family); /* Add font-family here */
+  }
+
+  ion-item {
     --background: #f1f1f1;
     border-radius: 10px;
     margin-bottom: 16px;
-}
-.header{
+    padding: 12px; /* Add padding for a cleaner look */
+  }
+
+  .header {
     margin-top: 100px;
     margin-bottom: 80px;
     text-align: center;
+  }
 
-    .subtitle{
-        color: gray;
-        font-size: 0.9rem;
-    }
-    .title{
-        font-size: 2rem;
-    }
-}
-.sign{
+  .header .title {
+    font-size: 2rem;
+    color: var(--primary-color); /* Use primary color */
+  }
+
+  .header .subtitle {
+    color: gray;
+    font-size: 0.9rem;
+  }
+
+  .sign {
     margin-top: 100px;
     display: flex;
     margin: auto;
     flex-direction: row;
     align-content: center;
     justify-content: center;
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 30;
-  width: 80%;
-    .p{
-        font-size: 0.9em;
-    }
-    a {
-        text-decoration: none;
-      }
-}
-.forgotpassword{
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 30;
+    width: 80%;
+  }
+
+  .sign .p {
+    font-size: 0.9em;
+  }
+
+  .sign a {
+    text-decoration: none;
+    color: var(--primary-color); /* Use primary color */
+  }
+
+  .forgotpassword {
     display: flex;
-    justify-content:  center;
-    a {
+    justify-content: center;
+  }
+
+  .forgotpassword a {
     font-weight: 400;
     font-size: 0.8em;
-        text-decoration: none;
-      }
-}
-.errorInput{
+    text-decoration: none;
+    color: var(--primary-color); /* Use primary color */
+  }
+
+  .errorInput {
     color: red;
     font-weight: 300;
     font-size: small;
     padding-top: -16px;
-}
-ion-icon {
+  }
+
+  ion-icon {
     position: absolute;
     right: 10px;
     color: gray;
     font-size: 1.2rem;
+  }
+
+  ion-fab-button {
+    --background: var(--primary-color); /* Use primary color */
+  }
+  ion-item {
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  ion-fab-button:hover {
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
   }

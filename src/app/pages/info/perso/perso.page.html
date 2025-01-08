@@ -1,12 +1,12 @@
 <ion-content>
   <div class="profile-container">
     <!-- Hidden file input -->
-    <input 
-      type="file" 
-      id="fileInput" 
-      accept="image/*" 
-      (change)="onPhotoSelected($event)" 
-      hidden 
+    <input
+      type="file"
+      id="fileInput"
+      accept="image/*"
+      (change)="onPhotoSelected($event)"
+      hidden
     />
 
     <!-- Title and description -->
@@ -26,8 +26,8 @@
     <form [formGroup]="profileForm" (ngSubmit)="submitForm()">
       <ion-item>
         <ion-label position="floating">Full Name</ion-label>
-        <ion-input 
-          type="text" 
+        <ion-input
+          type="text"
           formControlName="fullName"
           required
         ></ion-input>
@@ -38,16 +38,16 @@
 
       <ion-item>
         <ion-label position="floating">Nickname</ion-label>
-        <ion-input 
-          type="text" 
+        <ion-input
+          type="text"
           formControlName="nickname"
         ></ion-input>
       </ion-item>
 
       <ion-item>
         <ion-label position="floating">Email</ion-label>
-        <ion-input 
-          type="email" 
+        <ion-input
+          type="email"
           formControlName="email"
           required
         ></ion-input>
@@ -58,14 +58,14 @@
 
       <ion-item>
         <ion-label position="floating">Password</ion-label>
-        <ion-input 
-          [type]="showPassword ? 'text' : 'password'" 
+        <ion-input
+          [type]="showPassword ? 'text' : 'password'"
           formControlName="password"
           required
         ></ion-input>
-        <ion-icon 
-          [name]="showPassword ? 'eye-off' : 'eye'" 
-          slot="end" 
+        <ion-icon
+          [name]="showPassword ? 'eye-off' : 'eye'"
+          slot="end"
           (click)="togglePasswordVisibility()"
         ></ion-icon>
         <div *ngIf="profileForm.get('password')?.invalid && profileForm.get('password')?.touched" class="error-message">
@@ -75,8 +75,8 @@
 
       <ion-item>
         <ion-label position="floating">Phone Number</ion-label>
-        <ion-input 
-          type="tel" 
+        <ion-input
+          type="tel"
           formControlName="phoneNumber"
           required
         ></ion-input>
@@ -85,9 +85,9 @@
         </div>
       </ion-item>
 
-      <ion-button 
-        expand="full" 
-        class="submit-button" 
+      <ion-button
+        expand="full"
+        class="submit-button"
         type="submit"
         [disabled]="profileForm.invalid || isLoading"
       >Submit</ion-button>

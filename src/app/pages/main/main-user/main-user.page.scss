@@ -72,7 +72,7 @@ ion-button:hover {
 }
 
 ion-card {
-  --background: #202020;
+  // --background: #202020;
   border-radius: 12px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
@@ -128,4 +128,19 @@ ion-card-content {
 .scrollable-content {
   height: 100%; /* Important: Ensure the container takes up the full height */
   overflow-y: auto; /* Enable vertical scrolling */
+}
+ion-item {
+  --background: #ffffff;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  transition: background-color 0.3s;
+}
+
+ion-item:hover {
+  --background: #f0f0f0;
+}
+
+ion-icon {
+  color: var(--primary-color);
+  font-size: 1.5rem;
 }

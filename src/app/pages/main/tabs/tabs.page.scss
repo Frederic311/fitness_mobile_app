@@ -54,3 +54,18 @@ ion-menu {
   ion-item:hover ion-label {
     --color: #ffffff;
   }
+  ion-item {
+    --background: #ffffff;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    transition: background-color 0.3s;
+  }
+
+  ion-item:hover {
+    --background: #f0f0f0;
+  }
+
+  ion-icon {
+    color: var(--primary-color);
+    font-size: 1.5rem;
+  }
