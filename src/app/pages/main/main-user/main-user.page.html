@@ -41,7 +41,7 @@
         <h4>{{ coach.name }}</h4>
         <p><strong>Price:</strong> {{ coach.sessionPrice }} FCFA</p>
         <p>{{ coach.description }}</p>
-        <ion-button (click)="bookSession(coach.email)">Book a session</ion-button>
+        <ion-button (click)="openSessionsModal(coach.email)">Book a session</ion-button>
       </div>
     </div>
   </div>

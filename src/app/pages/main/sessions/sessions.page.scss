@@ -1,0 +1,57 @@
+ion-header {
+    --background: #6e44ff;
+    --color: #ffffff;
+  }
+
+  ion-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .session-list {
+    padding: 16px;
+    // max-height: 70vh; /* Adjust the height as needed */
+    //  overflow-y: auto;
+  }
+
+  .session-card {
+    border: 1px solid #6e44ff;
+    border-radius: 8px;
+    margin-bottom: 16px;
+    padding: 16px;
+    // background-color: #f9f9f9;
+  }
+
+  .session-header {
+    background-color: #6e44ff;
+    color: #ffffff;
+    padding: 8px;
+    border-radius: 4px;
+    // margin-bottom: 8px;
+  }
+
+  .session-content {
+    margin-left: 16px;
+  }
+
+  .exercise {
+    border-top: 1px solid #ddd;
+    margin-top: 8px;
+    padding-top: 8px;
+  }
+
+  .exercise h5 {
+    color: #6e44ff;
+    margin: 0;
+  }
+
+  .exercise p {
+    margin: 4px 0;
+  }
+
+  ion-button {
+    --background: #6e44ff;
+    --color: #ffffff;
+    margin-top: 8px;
+  }

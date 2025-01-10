@@ -1,0 +1,27 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Sessions</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismissModal()">Close</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<div class="session-list">
+  <div *ngFor="let session of sessions" class="session-card">
+    <div class="session-header">
+      <h4>{{ session.goal }}</h4>
+    </div>
+    <div class="session-content">
+      <p><strong>Start Time:</strong> {{ session.startDateTime | date: 'short' }}</p>
+      <p><strong>Sport Type:</strong> {{ session.sportType }}</p>
+      <p><strong>Status:</strong> {{ session.status }}</p>
+      <div *ngFor="let exercise of session.exercises" class="exercise">
+        <h5>{{ exercise.exerciseType }}</h5>
+        <p><strong>Duration:</strong> {{ exercise.duration / 60 }} min {{ exercise.duration % 60 }} sec</p>
+        <p><strong>Repetitions:</strong> {{ exercise.repetitions }}</p>
+      </div>
+      <ion-button (click)="bookSession(session.email)">Book</ion-button>
+    </div>
+  </div>
+</div>

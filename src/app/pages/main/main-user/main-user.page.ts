@@ -7,6 +7,9 @@ import { Platform } from '@ionic/angular';
 import { Diagnostic } from '@ionic-native/diagnostic/ngx';
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 import { ChangeDetectorRef } from '@angular/core';
+import { ModalController } from '@ionic/angular';
+import { SessionsPage } from '../sessions/sessions.page';
+
 
 
 @Component({
@@ -34,7 +37,8 @@ export class MainUserPage implements OnInit, OnDestroy {
     private platform: Platform,
     private diagnostic: Diagnostic,
     private androidPermissions: AndroidPermissions,
-    private cd: ChangeDetectorRef // Add this line
+    private cd: ChangeDetectorRef, // Add this line
+    private modalController: ModalController,
 
   ) {}
 
@@ -90,6 +94,17 @@ export class MainUserPage implements OnInit, OnDestroy {
       this.presentToast('User information is missing. Please log in again.');
     }
   }
+  async loadSessionsByCoachEmail(coachEmail: string) {
+    try {
+      this.sessions = await this.bookingService.fetchSessionsByCoachEmail(coachEmail);
+    } catch (error) {
+      console.error('Error fetching sessions by coach email:', error);
+    }
+  }
+
+  async openSessionsModal(coachEmail: string) { await this.loadSessionsByCoachEmail(coachEmail); // Load sessions by coach email
+  const modal = await this.modalController.create({ component: SessionsPage, componentProps: { sessions: this.sessions,coachEmail: coachEmail  } });
+  return await modal.present();}
 
   async presentToast(message: string) {
     const toast = document.createElement('ion-toast');

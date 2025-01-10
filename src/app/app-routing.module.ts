@@ -104,7 +104,11 @@ const routes: Routes = [
   {
     path: 'exercise',
     loadChildren: () => import('./pages/main/exercise/exercise.module').then( m => m.ExercisePageModule)
+  },  {
+    path: 'sessions',
+    loadChildren: () => import('./pages/main/sessions/sessions.module').then( m => m.SessionsPageModule)
   },
+
 
 
 
