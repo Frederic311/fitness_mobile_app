@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BookingService } from '../../../services/booking/booking.service';
 import { Exercise, Session } from '../../../services/auth/auth-service.service';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-exercise',
@@ -9,139 +11,185 @@ import { Exercise, Session } from '../../../services/auth/auth-service.service';
   styleUrls: ['./exercise.page.scss'],
 })
 export class ExercisePage implements OnInit {
-  exerciseDetails: Exercise;
-  remainingTime: number;
+  @ViewChild('youtubePlayer') youtubePlayer: ElementRef;
+  @ViewChild('videoPlayer') videoPlayer: ElementRef;
+  @ViewChild('timerCanvas') timerCanvas: ElementRef;
+
+  exerciseDetails: Exercise = { exerciseType: '', duration: 0, repetitions: 0, mediaUrl: '', completed: false };
+  sessionDetails: Session = { sessionId: '', coachEmail: '', goal: '', startDateTime: new Date(), sportType: '', exercises: [], status: '' };
+  remainingTime: number = 0;
   timerRunning: boolean = false;
   timer: any;
   currentRepetition: number = 0;
-  breakTime: number = 30; // 30 seconds break between repetitions
-  sessionDetails: Session;
-  currentExerciseIndex: number;
+  breakTime: number = 5; // 5 seconds break between repetitions
+  currentExerciseIndex: number = 0;
+  totalDuration: number = 0;
+  showCompletionPrompt: boolean = false;
+  sanitizedMediaUrl: SafeResourceUrl;
 
-  constructor(private route: ActivatedRoute, private bookingService: BookingService, private router: Router) {}
+  constructor(
+    private route: ActivatedRoute,
+    private bookingService: BookingService,
+    private router: Router,
+    private sanitizer: DomSanitizer,
+    private toastController: ToastController
+  ) {}
 
   ngOnInit() {
     const navigation = this.router.getCurrentNavigation();
     if (navigation?.extras.state) {
-      this.exerciseDetails = navigation.extras.state['exercise'];
-      this.sessionDetails = navigation.extras.state['sessionDetails'];
-      this.currentExerciseIndex = navigation.extras.state['index'];
+      this.exerciseDetails = navigation.extras.state['exercise'] || this.exerciseDetails;
+      this.sessionDetails = navigation.extras.state['session'] || this.sessionDetails;
+      this.currentExerciseIndex = navigation.extras.state['index'] || this.currentExerciseIndex;
       this.remainingTime = this.exerciseDetails.duration; // Set the remaining time based on the exercise duration
-      console.log('exerciseDetails:', this.exerciseDetails);
-      console.log('sessionDetails:', this.sessionDetails);
-      console.log('Session ID:', this.sessionDetails?.sessionId); // Add console log for session ID
+      this.totalDuration = this.exerciseDetails.duration; // Store the total duration for animation
+
+      this.sanitizedMediaUrl = this.sanitizeUrl(this.exerciseDetails.mediaUrl);
     } else {
-      throw new Error('No exercise details found in navigation state');
+      console.error('No exercise details found in navigation state');
     }
+  }
+
+  sanitizeUrl(url: string): SafeResourceUrl {
+    if (this.isYouTubeUrl(url)) {
+      url = url.replace('watch?v=', 'embed/');
+      url = url.replace('youtu.be/', 'www.youtube.com/embed/');
+      url += '?autoplay=1';
+    }
+    return this.sanitizer.bypassSecurityTrustResourceUrl(url);
+  }
+
+  isYouTubeUrl(url: string): boolean {
+    return url.includes('youtube.com') || url.includes('youtu.be');
   }
 
   startTimer() {
-    this.timerRunning = true;
-    this.timer = setInterval(() => {
-      this.remainingTime--;
-      if (this.remainingTime <= 0) {
-        clearInterval(this.timer);
-        this.timerRunning = false;
-        this.currentRepetition++;
-        if (this.currentRepetition < this.exerciseDetails.repetitions) {
-          this.showBreakDialog();
-        } else {
-          this.markExerciseAsCompleted();
-          this.showCompletionDialog();
+    if (!this.timerRunning) {
+      this.timerRunning = true;
+      this.showCompletionPrompt = false;
+      this.playVideo(); // Start the video
+      this.showGoToast(); // Display the "Go!" toast at the beginning of each repetition
+  
+      this.timer = setInterval(() => {
+        this.remainingTime--;
+        this.drawTimer(this.remainingTime);
+        if (this.remainingTime <= 0) {
+          clearInterval(this.timer);
+          this.timerRunning = false;
+          this.currentRepetition++;
+          if (this.currentRepetition < this.exerciseDetails.repetitions) {
+            this.showBreakToast(); // Display the toast and start the break timer
+          } else {
+            this.showCompletionPrompt = true;
+            this.stopVideo(); // Stop the video when exercise is complete
+          }
         }
-      }
-    }, 1000);
+      }, 1000);
+    }
   }
-
-  async showBreakDialog() {
-    const alert = document.createElement('ion-alert');
-    alert.header = 'Break Time';
-    alert.message = `The same exercise will start again in ${this.breakTime} seconds.`;
-    alert.buttons = [
-      {
-        text: 'OK',
-        handler: () => {
-          this.startBreakTimer();
-        }
-      }
-    ];
-
-    document.body.appendChild(alert);
-    await alert.present();
+  
+  async showGoToast() {
+    const toast = await this.toastController.create({
+      message: 'Go!',
+      duration: 2000,
+      position: 'bottom'
+    });
+    toast.present();
   }
-
+  
+  async showBreakToast() {
+    const toast = await this.toastController.create({
+      message: `The same exercise will start again in ${this.breakTime} seconds.`,
+      duration: 3000,
+      position: 'bottom'
+    });
+    toast.present();
+    this.startBreakTimer(); // Start the break timer after displaying the toast
+  }
+  
   startBreakTimer() {
     this.remainingTime = this.breakTime;
     this.timerRunning = true;
+    this.stopVideo(); // Stop the video during break
+  
     this.timer = setInterval(() => {
       this.remainingTime--;
+      this.drawTimer(this.remainingTime);
       if (this.remainingTime <= 0) {
         clearInterval(this.timer);
+        this.timerRunning = false;
         this.remainingTime = this.exerciseDetails.duration;
-        this.startTimer();
+        this.startTimer(); // Restart the main timer after the break
       }
     }, 1000);
   }
+  
+  
 
-  async showCompletionDialog() {
-    const alert = document.createElement('ion-alert');
-    alert.header = 'Exercise finished';
-    alert.message = 'Exercise finished';
-    alert.buttons = [
-      {
-        text: 'Next exercise',
-        handler: () => {
-          this.startNextExercise();
-        }
-      },
-      {
-        text: 'Later',
-        role: 'cancel'
-      }
-    ];
+  drawTimer(remainingTime: number) {
+    const canvas = this.timerCanvas.nativeElement as HTMLCanvasElement;
+    const context = canvas.getContext('2d');
+    if (!context) {
+      console.error('Failed to get 2D context');
+      return;
+    }
+    const radius = canvas.width / 2;
+    const centerX = canvas.width / 2;
+    const centerY = canvas.height / 2;
+    const startAngle = -Math.PI / 2;
+    const endAngle = startAngle + ((this.totalDuration - remainingTime) / this.totalDuration) * 2 * Math.PI;
 
-    document.body.appendChild(alert);
-    await alert.present();
-  }
+    context.clearRect(0, 0, canvas.width, canvas.height);
 
-  markExerciseAsCompleted() {
-    this.exerciseDetails.completed = true;
-    console.log('Exercise marked as completed:', this.exerciseDetails);
+    context.beginPath();
+    context.arc(centerX, centerY, radius - 10, 0, 2 * Math.PI, false);
+    context.fillStyle = '#f3f3f3';
+    context.fill();
+
+    context.beginPath();
+    context.arc(centerX, centerY, radius - 10, startAngle, endAngle, false);
+    context.lineWidth = 20;
+    context.strokeStyle = '#007bff';
+    context.stroke();
+
+    context.beginPath();
+    context.arc(centerX, centerY, radius - 30, 0, 2 * Math.PI, false);
+    context.fillStyle = '#ffffff';
+    context.fill();
+
+    context.fillStyle = '#007bff';
+    context.font = '20px Arial';
+    context.textAlign = 'center';
+    context.textBaseline = 'middle';
+    context.fillText(`${remainingTime}s`, centerX, centerY);
   }
 
   async startNextExercise() {
-    if (this.sessionDetails && this.sessionDetails.exercises) {
-      console.log('Starting next exercise. Current index:', this.currentExerciseIndex);
-      const notCompletedExercises = this.sessionDetails.exercises.filter(ex => !ex.completed); // Filter incomplete exercises
-
-      if (notCompletedExercises.length > 0) {
-        this.currentExerciseIndex++;
-        if (this.currentExerciseIndex < notCompletedExercises.length) {
-          const nextExercise = notCompletedExercises[this.currentExerciseIndex];
-          console.log('Navigating to next exercise with details:', nextExercise);
-          this.router.navigate(['/exercise'], { state: { exercise: nextExercise, sessionDetails: this.sessionDetails, index: this.currentExerciseIndex } });
-        } else {
-          await this.markSessionAsCompleted();
-          const alert = document.createElement('ion-alert');
-          alert.header = 'Session completed';
-          alert.message = 'All exercises are completed. The session is marked as completed.';
-          alert.buttons = ['OK'];
-          document.body.appendChild(alert);
-          await alert.present();
-        }
-      } else {
-        console.log('All exercises are already completed.');
-        await this.markSessionAsCompleted();
-        const alert = document.createElement('ion-alert');
-        alert.header = 'Session completed';
-        alert.message = 'All exercises are completed. The session is marked as completed.';
-        alert.buttons = ['OK'];
-        document.body.appendChild(alert);
-        await alert.present();
-      }
+    this.currentRepetition = 0; // Reset repetition count for the next exercise
+    this.currentExerciseIndex++;
+    if (this.currentExerciseIndex < this.sessionDetails.exercises.length) {
+      const nextExercise = this.sessionDetails.exercises[this.currentExerciseIndex];
+      this.exerciseDetails = nextExercise;
+      this.remainingTime = this.exerciseDetails.duration;
+      this.totalDuration = this.exerciseDetails.duration;
+      this.showCompletionPrompt = false; // Hide the completion prompt
+      this.sanitizedMediaUrl = this.sanitizeUrl(this.exerciseDetails.mediaUrl);
+      this.playVideo(); // Start the video for the next exercise
     } else {
-      console.error('sessionDetails or exercises property is undefined.');
+      await this.markSessionAsCompleted();
+      const toast = await this.toastController.create({
+        message: 'All exercises are completed. The session is marked as completed.',
+        duration: 2000,
+        position: 'bottom'
+      });
+      toast.present();
+      this.showCompletionPrompt = false; // Hide the completion prompt after session completion
+      this.stopVideo(); // Stop the video when session is complete
     }
+  }
+
+  finishLater() {
+    this.showCompletionPrompt = false;
   }
 
   async markSessionAsCompleted() {
@@ -149,12 +197,34 @@ export class ExercisePage implements OnInit {
       this.sessionDetails.status = 'completed';
       if (this.sessionDetails.sessionId) {
         await this.bookingService.updateSessionStatus(this.sessionDetails.sessionId, 'completed');
-        console.log('Session marked as completed. Session ID:', this.sessionDetails.sessionId);
       } else {
         console.error('Session ID is undefined');
       }
     } catch (error) {
       console.error('Error marking session as completed:', error);
+    }
+  }
+
+  returnToHome() {
+    this.router.navigate(['/main-coach']);
+  }
+
+  playVideo() {
+    if (this.videoPlayer) {
+      this.videoPlayer.nativeElement.loop = true; // Enable looping for the video
+      this.videoPlayer.nativeElement.play();
+    }
+    if (this.youtubePlayer) {
+      this.youtubePlayer.nativeElement.src += "&autoplay=1&loop=1"; // Enable looping for YouTube video
+    }
+  }
+
+  stopVideo() {
+    if (this.videoPlayer) {
+      this.videoPlayer.nativeElement.pause();
+    }
+    if (this.youtubePlayer) {
+      this.youtubePlayer.nativeElement.src = this.youtubePlayer.nativeElement.src.replace("&autoplay=1&loop=1", "");
     }
   }
 }
