@@ -102,9 +102,27 @@ export class MainUserPage implements OnInit, OnDestroy {
     }
   }
 
-  async openSessionsModal(coachEmail: string) { await this.loadSessionsByCoachEmail(coachEmail); // Load sessions by coach email
-  const modal = await this.modalController.create({ component: SessionsPage, componentProps: { sessions: this.sessions,coachEmail: coachEmail  } });
-  return await modal.present();}
+  async openSessionsModal(coachEmail: string) {
+    await this.loadSessionsByCoachEmail(coachEmail); // Load sessions by coach email
+
+    if (this.user) {
+      const modal = await this.modalController.create({
+        component: SessionsPage,
+        componentProps: {
+          sessions: this.sessions,
+          coachEmail: coachEmail,
+          userName: this.user.name,        // Safe to access user properties
+          userEmail: this.user.email,
+          userProfilePicture: this.user.profilePicture
+        }
+      });
+      return await modal.present();
+    } else {
+      console.error('User information is missing.');
+      this.presentToast('User information is missing. Please log in again.');
+    }
+  }
+
 
   async presentToast(message: string) {
     const toast = document.createElement('ion-toast');

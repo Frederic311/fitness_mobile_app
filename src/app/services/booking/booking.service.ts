@@ -48,7 +48,8 @@ export class BookingService {
         userProfilePicture,
         sessionDate: new Date().toISOString().split('T')[0],
         sessionTime: new Date(Date.now() + 86400000).toISOString().split('T')[1].split('.')[0], // +1 day
-        coachId // Store the coach ID
+        coachId,// Store the coach ID
+
       };
 
       const updatedReservations = coachData.reservations ? [...coachData.reservations, newReservation] : [newReservation];
