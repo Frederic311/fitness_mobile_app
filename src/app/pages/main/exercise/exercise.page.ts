@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BookingService } from '../../../services/booking/booking.service';
 import { Exercise, Session } from '../../../services/auth/auth-service.service';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { ToastController } from '@ionic/angular';
+import { ToastController, AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-exercise',
@@ -32,7 +32,8 @@ export class ExercisePage implements OnInit {
     private bookingService: BookingService,
     private router: Router,
     private sanitizer: DomSanitizer,
-    private toastController: ToastController
+    private toastController: ToastController,
+    private alertController: AlertController // Inject AlertController
   ) {}
 
   ngOnInit() {
@@ -69,7 +70,7 @@ export class ExercisePage implements OnInit {
       this.showCompletionPrompt = false;
       this.playVideo(); // Start the video
       this.showGoToast(); // Display the "Go!" toast at the beginning of each repetition
-  
+
       this.timer = setInterval(() => {
         this.remainingTime--;
         this.drawTimer(this.remainingTime);
@@ -80,14 +81,14 @@ export class ExercisePage implements OnInit {
           if (this.currentRepetition < this.exerciseDetails.repetitions) {
             this.showBreakToast(); // Display the toast and start the break timer
           } else {
-            this.showCompletionPrompt = true;
+            this.showCompletionPromptAlert(); // Show completion prompt when exercise is complete
             this.stopVideo(); // Stop the video when exercise is complete
           }
         }
       }, 1000);
     }
   }
-  
+
   async showGoToast() {
     const toast = await this.toastController.create({
       message: 'Go!',
@@ -96,7 +97,7 @@ export class ExercisePage implements OnInit {
     });
     toast.present();
   }
-  
+
   async showBreakToast() {
     const toast = await this.toastController.create({
       message: `The same exercise will start again in ${this.breakTime} seconds.`,
@@ -106,12 +107,12 @@ export class ExercisePage implements OnInit {
     toast.present();
     this.startBreakTimer(); // Start the break timer after displaying the toast
   }
-  
+
   startBreakTimer() {
     this.remainingTime = this.breakTime;
     this.timerRunning = true;
     this.stopVideo(); // Stop the video during break
-  
+
     this.timer = setInterval(() => {
       this.remainingTime--;
       this.drawTimer(this.remainingTime);
@@ -123,8 +124,6 @@ export class ExercisePage implements OnInit {
       }
     }, 1000);
   }
-  
-  
 
   drawTimer(remainingTime: number) {
     const canvas = this.timerCanvas.nativeElement as HTMLCanvasElement;
@@ -186,6 +185,30 @@ export class ExercisePage implements OnInit {
       this.showCompletionPrompt = false; // Hide the completion prompt after session completion
       this.stopVideo(); // Stop the video when session is complete
     }
+  }
+
+  async showCompletionPromptAlert() {
+    const alert = await this.alertController.create({
+      header: 'Exercise Finished',
+      message: 'Do you want to pass to the next exercise?',
+      buttons: [
+        {
+          text: 'Later',
+          role: 'cancel',
+          handler: () => {
+            console.log('User chose to continue later');
+          }
+        },
+        {
+          text: 'Next Exercise',
+          handler: () => {
+            this.startNextExercise();
+          }
+        }
+      ]
+    });
+
+    await alert.present();
   }
 
   finishLater() {
