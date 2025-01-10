@@ -1,3 +1,4 @@
+// The additional code, modified for brevity to fit your original style
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AuthService, Session, Users } from '../../../services/auth/auth-service.service';
 import { BookingService } from '../../../services/booking/booking.service';
@@ -10,8 +11,6 @@ import { ChangeDetectorRef } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { SessionsPage } from '../sessions/sessions.page';
 
-
-
 @Component({
   selector: 'app-main-user',
   templateUrl: './main-user.page.html',
@@ -21,6 +20,7 @@ export class MainUserPage implements OnInit, OnDestroy {
   user: Users | null = null;
   sessions: Session[] = [];
   coaches: Users[] = [];
+  filteredCoaches: Users[] = [];
   totalDistance: number = 0;
   totalDuration: number = 0;
   steps: number = 0;
@@ -28,6 +28,8 @@ export class MainUserPage implements OnInit, OnDestroy {
   startTime: number = 0;
   sessionDuration: number = 0;
   acceptedReservations: any[] = [];
+  selectedSport: string = '';
+  sportsCriteria: string[] = ['Taekwondo', 'Natation'];
 
   constructor(
     private authService: AuthService,
@@ -37,9 +39,8 @@ export class MainUserPage implements OnInit, OnDestroy {
     private platform: Platform,
     private diagnostic: Diagnostic,
     private androidPermissions: AndroidPermissions,
-    private cd: ChangeDetectorRef, // Add this line
+    private cd: ChangeDetectorRef,
     private modalController: ModalController,
-
   ) {}
 
   ngOnInit(): void {
@@ -65,10 +66,27 @@ export class MainUserPage implements OnInit, OnDestroy {
 
   loadCoaches(): void {
     this.authService.fetchCoaches().then(coaches => {
-      this.coaches = coaches; // Assign all coaches to the coaches array
+      this.coaches = coaches;
+      this.filteredCoaches = coaches;
+      this.extractSportsCriteria();
     }).catch(error => {
       console.error('Error fetching coaches:', error);
     });
+  }
+
+  extractSportsCriteria(): void {
+    const allSports: string[] = this.coaches.map((coach: Users) => coach.sportsCriteria || []).reduce((acc, val) => acc.concat(val), []);
+    this.sportsCriteria = Array.from(new Set(allSports));
+  }
+
+  filterCoaches(): void {
+    if (this.selectedSport) {
+      this.filteredCoaches = this.coaches.filter(coach =>
+        coach.sportsCriteria?.includes(this.selectedSport)
+      );
+    } else {
+      this.filteredCoaches = this.coaches;
+    }
   }
 
   loadSessions(userEmail: string): void {
@@ -85,7 +103,7 @@ export class MainUserPage implements OnInit, OnDestroy {
         await this.bookingService.bookSession(coachEmail, this.user.name, this.user.email, this.user.profilePicture);
         console.log(`Booking session with coach email: ${coachEmail}`);
         this.presentToast('Session booked successfully');
-        this.loadSessions(this.user.email); // Reload sessions after booking
+        this.loadSessions(this.user.email);
       } catch (error) {
         console.error('Error booking session:', error);
         this.presentToast('Error booking session. Please try again.');
@@ -94,6 +112,7 @@ export class MainUserPage implements OnInit, OnDestroy {
       this.presentToast('User information is missing. Please log in again.');
     }
   }
+
   async loadSessionsByCoachEmail(coachEmail: string) {
     try {
       this.sessions = await this.bookingService.fetchSessionsByCoachEmail(coachEmail);
@@ -101,6 +120,7 @@ export class MainUserPage implements OnInit, OnDestroy {
       console.error('Error fetching sessions by coach email:', error);
     }
   }
+
 
   async openSessionsModal(coachEmail: string) {
     await this.loadSessionsByCoachEmail(coachEmail); // Load sessions by coach email
@@ -142,7 +162,6 @@ export class MainUserPage implements OnInit, OnDestroy {
 
   requestPedometerPermission() {
     if (this.platform.is('android')) {
-
       this.diagnostic.requestRuntimePermission(this.diagnostic.permission.BODY_SENSORS)
         .then((status) => {
           if (status === this.diagnostic.permissionStatus.GRANTED) {
@@ -160,25 +179,21 @@ export class MainUserPage implements OnInit, OnDestroy {
 
   startPedometer() {
     this.startTime = Date.now();
-    const stepLengthInMeters = 0.762; // Average step length in meters, adjust as needed
+    const stepLengthInMeters = 0.762;
 
     this.pedometer.startPedometerUpdates()
       .subscribe((data: IPedometerData) => {
         this.steps = data.numberOfSteps;
-        this.distance = this.steps * stepLengthInMeters / 1000; // Distance in kilometers
-        this.sessionDuration = (Date.now() - this.startTime) / (1000 * 60 * 60); // Duration in hours
+        this.distance = this.steps * stepLengthInMeters / 1000;
+        this.sessionDuration = (Date.now() - this.startTime) / (1000 * 60 * 60);
         this.totalDuration += this.sessionDuration;
-        this.startTime = Date.now(); // Reset start time for next session
+        this.startTime = Date.now();
 
-        // Trigger change detection
         this.cd.detectChanges();
       }, (error) => {
         console.error('Error with pedometer updates:', error);
       });
   }
-
-
-
 
   ngOnDestroy() {
     this.pedometer.stopPedometerUpdates();

@@ -33,7 +33,14 @@
   </div>
   <div class="coaches-list">
     <h3>Available Coaches</h3>
-    <div *ngFor="let coach of coaches" class="coach-item" [style.background-image]="'url(' + (coach.bannerImage || 'assets/images/default-banner.png') + ')'">
+    <ion-item>
+      <ion-label>Filter by Sport</ion-label>
+      <ion-select [(ngModel)]="selectedSport" (ionChange)="filterCoaches()" class="styled-dropdown">
+        <ion-select-option value="">All</ion-select-option>
+        <ion-select-option *ngFor="let sport of sportsCriteria" [value]="sport">{{ sport }}</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <div *ngFor="let coach of filteredCoaches" class="coach-item" [style.background-image]="'url(' + (coach.bannerImage || 'assets/images/default-banner.png') + ')'">
       <ion-avatar class="coach-profile">
         <img [src]="coach.profilePicture || 'assets/images/default-avatar.png'" alt="Coach Profile Picture">
       </ion-avatar>
