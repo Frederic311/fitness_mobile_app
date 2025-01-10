@@ -96,22 +96,22 @@ export class MainUserPage implements OnInit, OnDestroy {
       console.error('Error fetching sessions:', error);
     });
   }
+  // async bookSession(coachEmail: string): Promise<void> {
+  //   if (this.user && this.user.name && this.user.email && this.user.profilePicture) {
+  //     try {
+  //       await this.bookingService.bookSession(coachEmail, this.user.name, this.user.email, this.user.profilePicture);
+  //       console.log(`Booking session with coach email: ${coachEmail}`);
+  //       this.presentToast('Session booked successfully');
+  //       this.loadSessions(this.user.email);
+  //     } catch (error) {
+  //       console.error('Error booking session:', error);
+  //       this.presentToast('Error booking session. Please try again.');
+  //     }
+  //   } else {
+  //     this.presentToast('User information is missing. Please log in again.');
+  //   }
+  // }
 
-  async bookSession(coachEmail: string): Promise<void> {
-    if (this.user && this.user.name && this.user.email && this.user.profilePicture) {
-      try {
-        await this.bookingService.bookSession(coachEmail, this.user.name, this.user.email, this.user.profilePicture);
-        console.log(`Booking session with coach email: ${coachEmail}`);
-        this.presentToast('Session booked successfully');
-        this.loadSessions(this.user.email);
-      } catch (error) {
-        console.error('Error booking session:', error);
-        this.presentToast('Error booking session. Please try again.');
-      }
-    } else {
-      this.presentToast('User information is missing. Please log in again.');
-    }
-  }
 
   async loadSessionsByCoachEmail(coachEmail: string) {
     try {

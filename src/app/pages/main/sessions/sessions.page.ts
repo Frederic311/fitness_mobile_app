@@ -32,18 +32,20 @@ export class SessionsPage implements OnInit {
     this.modalController.dismiss();
   }
 
-  async bookSession(session: Session) {
+  async bookSession(index: number) {
+    const session = this.sessions[index];
     console.log('Booking session:', session);
     console.log('User name:', this.userName);  // Log the user's name
     console.log('User email:', this.userEmail);  // Log the user's email
     console.log('User profile picture:', this.userProfilePicture);  // Log the user's profile picture
+    console.log('Session goal:', session.goal); // Log the session goal
 
-    if (this.userName && this.userEmail && this.userProfilePicture) {
+    if (this.userName && this.userEmail && this.userProfilePicture && session.goal) {
       try {
-        await this.bookingService.bookSession(this.coachEmail, this.userName, this.userEmail, this.userProfilePicture);
+        await this.bookingService.bookSession(this.coachEmail, this.userName, this.userEmail, this.userProfilePicture, session.goal);
         console.log(`Booking session with coach email: ${this.coachEmail}`);
         this.presentToast('Session booked successfully');
-        this.loadSessions(this.userEmail);  // Reload sessions after booking
+        this.dismissModal();  // Dismiss the modal after an error
       } catch (error) {
         console.error('Error booking session:', error);
         this.presentToast('Error booking session. Please try again.');
@@ -53,10 +55,12 @@ export class SessionsPage implements OnInit {
       console.error('Missing user information:', {
         name: this.userName,
         email: this.userEmail,
-        profilePicture: this.userProfilePicture
+        profilePicture: this.userProfilePicture,
+        goal: session.goal
       });
     }
   }
+
 
   async presentToast(message: string) {
     const toast = document.createElement('ion-toast');
